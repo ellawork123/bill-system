@@ -6,6 +6,7 @@
     <title>公司帳單管理系統 | Company Bill Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
         body { font-family: 'Inter', 'Noto Sans TC', sans-serif; transition: background-color 0.3s, color 0.3s; }
@@ -36,7 +37,6 @@
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen">
     <div id="app" class="max-w-[1400px] mx-auto px-4 py-8">
-        <!-- Header -->
         <header class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <div>
                 <h1 class="text-2xl font-bold flex items-center gap-2">
@@ -62,7 +62,6 @@
             </div>
         </header>
 
-        <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
             <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
                 <div class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg">
@@ -102,7 +101,6 @@
             </div>
         </div>
 
-        <!-- Navigation -->
         <nav class="flex border-b border-gray-200 dark:border-slate-700 mb-8 overflow-x-auto no-scrollbar">
             <button data-tab="dashboard" class="nav-tab px-6 py-3 font-medium text-sm whitespace-nowrap tab-active" data-t="tabDashboard">儀表板</button>
             <button data-tab="bills" class="nav-tab px-6 py-3 font-medium text-sm whitespace-nowrap text-gray-500 hover:text-gray-700 dark:hover:text-slate-300" data-t="tabBills">所有帳單</button>
@@ -110,9 +108,7 @@
             <button data-tab="history" class="nav-tab px-6 py-3 font-medium text-sm whitespace-nowrap text-gray-500 hover:text-gray-700 dark:hover:text-slate-300" data-t="tabHistory">歷史紀錄</button>
         </nav>
 
-        <!-- Main Content -->
         <main>
-            <!-- Dashboard Tab -->
             <section id="tab-dashboard" class="tab-content">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
@@ -136,7 +132,6 @@
                 </div>
             </section>
 
-            <!-- Bills Tab -->
             <section id="tab-bills" class="tab-content hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
                     <div class="p-4 border-b border-gray-100 dark:border-slate-700 flex flex-col md:flex-row gap-4 items-center justify-between bg-gray-50/50 dark:bg-slate-800/50">
@@ -178,14 +173,12 @@
                                 </tr>
                             </thead>
                             <tbody id="bills-table-body" class="divide-y divide-gray-50 dark:divide-slate-700">
-                                <!-- Dynamic content -->
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <!-- Templates Tab -->
             <section id="tab-templates" class="tab-content hidden">
                 <div class="mb-6 flex justify-between items-center">
                     <h4 class="font-bold text-lg" data-t="vendorTemplates">範本管理</h4>
@@ -194,11 +187,9 @@
                     </button>
                 </div>
                 <div id="templates-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Dynamic content -->
-                </div>
+                    </div>
             </section>
 
-            <!-- History Tab -->
             <section id="tab-history" class="tab-content hidden">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 p-6">
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
@@ -218,13 +209,11 @@
                         </div>
                     </div>
                     <div id="history-content" class="space-y-4">
-                        <!-- History by month will be rendered here -->
-                    </div>
+                        </div>
                 </div>
             </section>
         </main>
 
-        <!-- Bill Modal -->
         <div id="bill-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
                 <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center sticky top-0 bg-white dark:bg-slate-900 z-10">
@@ -232,7 +221,6 @@
                     <button class="close-modal p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
                 <div class="p-6">
-                    <!-- Smart Paste Area -->
                     <div class="mb-6">
                         <label class="block text-sm font-bold text-blue-600 dark:text-blue-400 mb-2 flex items-center gap-2">
                             <i data-lucide="sparkles" class="w-4 h-4"></i>
@@ -316,7 +304,6 @@
             </div>
         </div>
 
-        <!-- Payment Detail Modal (After Paid) -->
         <div id="payment-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center bg-green-50 dark:bg-green-900/20">
@@ -336,8 +323,7 @@
                             </select>
                         </div>
                         <div id="pay-dynamic-fields" class="space-y-4">
-                            <!-- Dynamic -->
-                        </div>
+                            </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1" data-t="paymentDate">付款日期</label>
                             <input type="date" id="pay-date" required class="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg px-4 py-2 outline-none">
@@ -351,7 +337,6 @@
             </div>
         </div>
 
-        <!-- Template Modal (Unchanged but with i18n) -->
         <div id="template-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center">
@@ -382,8 +367,7 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1" data-t="category">類別</label>
                                 <select id="tpl-category" class="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg px-4 py-2 outline-none">
-                                    <!-- Dynamic -->
-                                </select>
+                                    </select>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1" data-t="accountNo">帳號</label>
@@ -407,7 +391,6 @@
             </div>
         </div>
 
-        <!-- Category Management Modal -->
         <div id="category-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center">
@@ -420,13 +403,11 @@
                         <button id="add-cat-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" data-t="addCategory">新增</button>
                     </div>
                     <div id="cat-list" class="space-y-2 max-h-60 overflow-y-auto">
-                        <!-- Dynamic -->
-                    </div>
+                        </div>
                 </div>
             </div>
         </div>
 
-        <!-- Export Modal -->
         <div id="export-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
             <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center">
@@ -439,28 +420,14 @@
                             <div class="font-bold" data-t="exportAll">匯出所有資料</div>
                             <div class="text-xs text-gray-500" data-t="exportAllDesc">包含所有年份、已付及未付帳單</div>
                         </div>
-                        <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-blue-500"></i>
+                        <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors"></i>
                     </button>
-                    <button id="export-unpaid" class="w-full text-left p-4 rounded-xl border border-gray-100 dark:border-slate-800 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors flex items-center justify-between group">
+                    <button id="export-filtered" class="w-full text-left p-4 rounded-xl border border-gray-100 dark:border-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors flex items-center justify-between group">
                         <div>
-                            <div class="font-bold" data-t="exportUnpaid">匯出未付帳單</div>
-                            <div class="text-xs text-gray-500" data-t="exportUnpaidDesc">僅匯出目前待處理的帳單</div>
+                            <div class="font-bold" data-t="exportFiltered">匯出目前篩選結果</div>
+                            <div class="text-xs text-gray-500" data-t="exportFilteredDesc">僅匯出表格中目前顯示的帳單</div>
                         </div>
-                        <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-yellow-500"></i>
-                    </button>
-                    <button id="export-monthly" class="w-full text-left p-4 rounded-xl border border-gray-100 dark:border-slate-800 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors flex items-center justify-between group">
-                        <div>
-                            <div class="font-bold" data-t="exportMonth">匯出本月報表</div>
-                            <div class="text-xs text-gray-500" data-t="exportMonthDesc">匯出本月所有相關帳單紀錄</div>
-                        </div>
-                        <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-green-500"></i>
-                    </button>
-                    <button id="export-upcoming-2" class="w-full text-left p-4 rounded-xl border border-gray-100 dark:border-slate-800 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors flex items-center justify-between group">
-                        <div>
-                            <div class="font-bold" data-t="exportUpcoming2">匯出未來 2 個月待付</div>
-                            <div class="text-xs text-gray-500" data-t="exportUpcoming2Desc">匯出未來 60 天內所有未付帳單</div>
-                        </div>
-                        <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-purple-500"></i>
+                        <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors"></i>
                     </button>
                 </div>
             </div>
@@ -468,1086 +435,542 @@
     </div>
 
     <script>
-// 1. 引入 Supabase 雲端核心
-        if (!document.getElementById('supabase-cdn')) {
-            const script = document.createElement('script');
-            script.id = 'supabase-cdn';
-            script.src = 'https://unpkg.com/@supabase/supabase-js@2';
-            document.head.appendChild(script);
-        }
+        // ==========================================
+        // 1. 填入你的 Supabase 金鑰設定
+        // ==========================================
+        const SUPABASE_URL = "https://你的專案ID.supabase.co"; 
+        const SUPABASE_ANON_KEY = "你的匿名API鎖匙KEY";
 
-        // 2. 注入你專屬的 Supabase 安全鎖匙
-        const SUPABASE_URL = "https://kyebgygdcnrabcuuncac.supabase.co";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5ZWJneWdkY25yYWJjdXVuY2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NDM3OTMsImV4cCI6MjA5NTUxOTc5M30.MLG0Eh4gq-boJ4GXyAtacJsSBE1K8NmyVzvZKl9f_vY";
+        // 初始化 Supabase 客戶端
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // --- I18n 翻譯配置 ---
+        // ==========================================
+        // 2. 系統多語言與核心狀態
+        // ==========================================
         const i18n = {
             zh: {
-                title: "公司帳單管理系統", addBill: "新增帳單", export: "匯出", statUnpaid: "未付總額", stat30: "30天內到期", statOverdue: "已逾期", statPaid: "本月已付", tabDashboard: "儀表板", tabBills: "所有帳單", tabTemplates: "範本管理", tabHistory: "歷史紀錄", next30: "未來 30 天", upcoming: "即將到期", noBills: "暫無帳單", allYears: "所有年份", allMonths: "所有月份", allCategories: "所有類別", thName: "帳單名稱", thCategory: "類別", thAmount: "金額", thDueDate: "到期日", thStatus: "狀態", thActions: "操作", vendorTemplates: "範本管理", createTemplate: "建立新範本", paymentHistory: "付款歷史紀錄", smartPaste: "智能貼上 (從訊息自動提取資訊)", extractInfo: "提取資訊", useTemplate: "使用範本", billName: "帳單名稱 *", category: "類別 *", amount: "金額 *", amountType: "金額類型", fixed: "固定 (Fixed)", variable: "變動 (Variable)", dueDate: "到期日 *", payer: "付款人", frequency: "支付週期", payableTo: "支票抬頭 (Payable To)", remark: "備註", cancel: "取消", save: "儲存", confirmPayment: "確認付款資訊", paymentMethod: "付款方式", paymentDate: "付款日期", confirm: "確認已付", tplName: "範本名稱 (例如: KH11A)", exportOptions: "匯出選項", exportAll: "匯出所有資料", exportAllDesc: "包含所有年份、已付及未付帳單", exportUnpaid: "匯出未付帳單", exportUnpaidDesc: "僅匯出目前待處理的帳單", exportMonth: "匯出本月報表", exportMonthDesc: "匯出本月所有相關帳單紀錄", exportUpcoming2: "匯出未來 2 個月待付", exportUpcoming2Desc: "匯出未來 60 天內所有未付帳單", paid: "已付", unpaid: "未付", overdue: "逾期", monthly: "每月固定支付 (Monthly)", oneTime: "單次支付 (One-time)", semiAnnual: "每半年支付 (Semi-Annual)", quarterly: "每季支付 (Quarterly)", annual: "每年支付 (Annual)", allStatus: "所有狀態", urgent: "緊急", manageCategories: "管理類別", addCategory: "新增類別", categoryName: "類別名稱", address: "地址/資訊", accountNo: "付款帳號", thAmountSort: "金額排序", thDateSort: "日期排序", thStatusSort: "狀態排序", recallPayment: "撤回付款", confirmRecall: "確定要撤回此筆付款並將其標記為未付嗎？"
+                title: "公司帳單管理系統", addBill: "新增帳單", export: "匯出",
+                statUnpaid: "未付總額", stat30: "30天內到期", statOverdue: "已逾期", statPaid: "本月已付",
+                tabDashboard: "儀表板", tabBills: "所有帳單", tabTemplates: "範本管理", tabHistory: "歷史紀錄",
+                urgent: "緊急", upcoming: "即將到期", next30: "未來 30 天", noBills: "暫無帳單",
+                allYears: "所有年份", allMonths: "所有月份", allCategories: "所有類別", allStatus: "所有狀態",
+                manageCategories: "管理類別", thName: "帳單名稱", thAmountSort: "金額", thDateSort: "到期日",
+                thStatusSort: "狀態", thActions: "操作", vendorTemplates: "範本管理", createTemplate: "建立新範本",
+                paymentHistory: "付款歷史紀錄", smartPaste: "智能貼上 (從訊息自動提取資訊)", extractInfo: "提取資訊",
+                useTemplate: "使用範本", billName: "帳單名稱 *", category: "類別 *", amount: "金額 *",
+                fixed: "固定 (Fixed)", variable: "變動 (Variable)", dueDate: "到期日 *", payer: "付款人",
+                frequency: "支付週期", oneTime: "單次支付 (One-time)", monthly: "每月固定支付 (Monthly)",
+                quarterly: "每季支付 (Quarterly)", semiAnnual: "每半年支付 (Semi-Annual)", annual: "每年支付 (Annual)",
+                payableTo: "支票抬頭 (Payable To)", accountNo: "付款帳號", remark: "備註", cancel: "取消", save: "儲存",
+                confirmPayment: "確認付款資訊", paymentMethod: "付款方式", paymentDate: "付款日期", confirm: "確認已付",
+                amountType: "金額類型", address: "地址/資訊", categoryName: "類別名稱", addCategory: "新增",
+                exportOptions: "匯出選項", exportAll: "匯出所有資料", exportAllDesc: "包含所有年份、已付及未付帳單",
+                exportFiltered: "匯出目前篩選結果", exportFilteredDesc: "僅匯出表格中目前顯示的帳單"
             },
             en: {
-                title: "Bill Management System", addBill: "Add New Bill", export: "Export", statUnpaid: "Total Unpaid", stat30: "Due in 30 Days", statOverdue: "Overdue", statPaid: "Paid this Month", tabDashboard: "Dashboard", tabBills: "All Bills", tabTemplates: "Templates", tabHistory: "History", next30: "Next 30 Days", upcoming: "Upcoming", noBills: "No bills found", allYears: "All Years", allMonths: "All Months", allCategories: "All Categories", thName: "Bill Name", thCategory: "Category", thAmount: "Amount", thDueDate: "Due Date", thStatus: "Status", thActions: "Actions", vendorTemplates: "Templates", createTemplate: "New Template", paymentHistory: "Payment History", smartPaste: "Smart Paste (Auto-extract from text)", extractInfo: "Extract Info", useTemplate: "Use Template", billName: "Bill Name *", category: "Category *", amount: "Amount *", amountType: "Amount Type", fixed: "Fixed", variable: "Variable", dueDate: "Due Date *", payer: "Payer", frequency: "Payment Cycle", payableTo: "Payable To", remark: "Remark", cancel: "Cancel", save: "Save Bill", confirmPayment: "Confirm Payment", paymentMethod: "Payment Method", paymentDate: "Payment Date", confirm: "Confirm Paid", tplName: "Template Name (e.g. KH11A)", exportOptions: "Export Options", exportAll: "Export All Data", exportAllDesc: "Includes all years, paid and unpaid", exportUnpaid: "Export Unpaid Only", exportUnpaidDesc: "Only export pending bills", exportMonth: "Export Monthly Report", exportMonthDesc: "Export all records for this month", exportUpcoming2: "Export Upcoming 2 Months", exportUpcoming2Desc: "Export all unpaid bills for next 60 days", paid: "Paid", unpaid: "Unpaid", overdue: "Overdue", monthly: "Monthly Recurring", oneTime: "One-time Payment", semiAnnual: "Semi-Annual Recurring", quarterly: "Quarterly Recurring", annual: "Annual Recurring", allStatus: "All Status", urgent: "Urgent", manageCategories: "Categories", addCategory: "Add Category", categoryName: "Category Name", address: "Address/Info", accountNo: "Payment Account No", thAmountSort: "Sort by Amount", thDateSort: "Sort by Date", thStatusSort: "Sort by Status", recallPayment: "Recall Payment", confirmRecall: "Are you sure you want to recall this payment and mark it as unpaid?"
+                title: "Bill Mgmt System", addBill: "Add Bill", export: "Export",
+                statUnpaid: "Total Unpaid", stat30: "Due in 30 Days", statOverdue: "Overdue", statPaid: "Paid This Month",
+                tabDashboard: "Dashboard", tabBills: "All Bills", tabTemplates: "Templates", tabHistory: "History",
+                urgent: "URGENT", upcoming: "UPCOMING", next30: "Next 30 Days", noBills: "No bills found",
+                allYears: "All Years", allMonths: "All Months", allCategories: "All Categories", allStatus: "All Status",
+                manageCategories: "Categories", thName: "Bill Name", thAmountSort: "Amount", thDateSort: "Due Date",
+                thStatusSort: "Status", thActions: "Actions", vendorTemplates: "Templates Management", createTemplate: "Create Template",
+                paymentHistory: "Payment History", smartPaste: "Smart Paste (Auto Extract)", extractInfo: "Extract",
+                useTemplate: "Use Template", billName: "Bill Name *", category: "Category *", amount: "Amount *",
+                fixed: "Fixed", variable: "Variable", dueDate: "Due Date *", payer: "Payer",
+                frequency: "Frequency", oneTime: "One-time", monthly: "Monthly",
+                quarterly: "Quarterly", semiAnnual: "Semi-Annual", annual: "Annual",
+                payableTo: "Payable To", accountNo: "Account No.", remark: "Remark", cancel: "Cancel", save: "Save",
+                confirmPayment: "Confirm Payment", paymentMethod: "Payment Method", paymentDate: "Payment Date", confirm: "Confirm Paid",
+                amountType: "Amount Type", address: "Address/Info", categoryName: "Category Name", addCategory: "Add",
+                exportOptions: "Export Options", exportAll: "Export All Data", exportAllDesc: "All years, paid and unpaid bills",
+                exportFiltered: "Export Current View", exportFilteredDesc: "Only bills currently visible in table"
             }
         };
 
-        // --- 狀態管理 ---
         let state = {
-            lang: localStorage.getItem('bm_lang') || 'zh',
-            dark: localStorage.getItem('bm_dark') === 'true',
+            lang: 'zh',
+            dark: false,
             bills: [],
             templates: [],
             categories: ["Utilities", "Rent", "Marketing", "Loans", "Telecom", "Others"],
             currentTab: 'dashboard',
-            sort: { field: 'dueDate', order: 'asc' }
+            sortField: 'date',
+            sortOrder: 'asc'
         };
 
-        let _supabase = null;
-        function getSupabase() {
-            if (!_supabase && window.supabase) {
-                _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            }
-            return _supabase;
-        }
-
-        // --- 從 Supabase 同步數據 ---
-        async function fetchFromCloud() {
-            const client = getSupabase();
-            if (!client) return false;
+        // ==========================================
+        // 3. 核心雲端資料同步函數 (Supabase Fetch/Save)
+        // ==========================================
+        async function loadDataFromCloud() {
             try {
-                const { data: bills } = await client.from('bills').select('*');
-                const { data: templates } = await client.from('templates').select('*');
-                const { data: categories } = await client.from('categories').select('*');
+                // 1. 讀取帳單
+                const { data: billsData, error: billsErr } = await supabaseClient
+                    .from('bills')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                // 2. 讀取範本
+                const { data: tplData, error: tplErr } = await supabaseClient
+                    .from('templates')
+                    .select('*');
 
-                if (bills) state.bills = bills;
-                if (templates) state.templates = templates;
-                if (categories && categories.length) state.categories = categories.map(c => c.name);
-                return true;
-            } catch (err) {
-                console.error("Cloud fetch error:", err);
-                return false;
+                // 3. 讀取類別
+                const { data: catData, error: catErr } = await supabaseClient
+                    .from('categories')
+                    .select('*');
+
+                if (!billsErr && billsData) state.bills = billsData;
+                if (!tplErr && tplData) state.templates = tplData;
+                if (!catErr && catData && catData.length > 0) {
+                    state.categories = catData.map(c => c.name);
+                }
+
+                // 同步備份回本地 LocalStorage
+                localStorage.setItem('bill_state_backup', JSON.stringify({
+                    bills: state.bills,
+                    templates: state.templates,
+                    categories: state.categories
+                }));
+            } catch (e) {
+                console.warn("無法連接到 Supabase 雲端，切換為本地快取模式:", e);
+                const backup = localStorage.getItem('bill_state_backup');
+                if (backup) {
+                    const parsed = JSON.parse(backup);
+                    state.bills = parsed.bills || [];
+                    state.templates = parsed.templates || [];
+                    state.categories = parsed.categories || ["Utilities", "Rent", "Marketing", "Loans", "Telecom", "Others"];
+                }
             }
         }
 
-        // --- 更新 UI ---
+        async function saveStateToCloud(table, type, recordData) {
+            // 先同步更新本地狀態，畫面立即反應
+            localStorage.setItem('bill_state_backup', JSON.stringify({
+                bills: state.bills,
+                templates: state.templates,
+                categories: state.categories
+            }));
+
+            try {
+                if (type === 'insert') {
+                    await supabaseClient.from(table).insert([recordData]);
+                } else if (type === 'update') {
+                    await supabaseClient.from(table).update(recordData).eq('id', recordData.id);
+                } else if (type === 'delete') {
+                    await supabaseClient.from(table).delete().eq('id', recordData.id);
+                }
+            } catch (error) {
+                console.error(`Supabase 雲端同步失敗 (${table} - ${type}):`, error);
+            }
+        }
+
+        // ==========================================
+        // 4. UI 切換與語系介面更新
+        // ==========================================
         function updateUI() {
-            if (state.dark) document.documentElement.classList.add('dark');
-            else document.documentElement.classList.remove('dark');
-            const iconEl = document.getElementById('dark-icon');
-            if(iconEl) iconEl.setAttribute('data-lucide', state.dark ? 'sun' : 'moon');
-            
-            const langBtn = document.getElementById('toggle-lang');
-            if(langBtn) langBtn.innerText = state.lang === 'zh' ? 'EN' : '中文';
-            
+            document.documentElement.className = state.dark ? 'dark' : 'light';
+            document.getElementById('dark-icon').setAttribute('data-lucide', state.dark ? 'sun' : 'moon');
+            document.getElementById('lang-text').innerText = state.lang === 'zh' ? 'EN' : '華';
+
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
                 if (i18n[state.lang][key]) {
                     if (el.tagName === 'INPUT' && el.getAttribute('placeholder')) {
-                        el.setAttribute('placeholder', i18n[state.lang][key]);
+                        el.placeholder = i18n[state.lang][key];
                     } else {
                         el.innerText = i18n[state.lang][key];
                     }
                 }
             });
-
-            if(window.lucide) lucide.createIcons();
-            renderAll();
+            lucide.createIcons();
         }
 
-        async function saveData() {
-            localStorage.setItem('bm_lang', state.lang);
-            localStorage.setItem('bm_dark', state.dark);
-            renderAll();
-        }
-
-        // --- Smart Paste 智能提取 ---
-        const pasteBtn = document.getElementById('apply-smart-paste');
-        if(pasteBtn) {
-            pasteBtn.addEventListener('click', () => {
-                const text = document.getElementById('smart-paste-input').value;
-                if (!text) return;
-
-                const amountMatch = text.match(/(?:金額|金额|amount|total|HKD|HK\$|\$)\s?[:：]?\s?(\d{1,7}(?:\.\d{1,2})?)/i) || text.match(/(\d{1,7}(?:\.\d{1,2})?)/);
-                const dateMatch = text.match(/(\d{4}[-\/]\d{1,2}[-\/]\d{1,2})/) || text.match(/(\d{1,2}[-\/]\d{1,2}[-\/]\d{4})/);
+        // 頁籤切換
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.nav-tab').forEach(t => {
+                    t.classList.remove('tab-active');
+                    t.classList.add('text-gray-500');
+                });
+                e.target.classList.add('tab-active');
                 
-                let name = "";
-                const nameKeywords = ["帳單", "bill", "invoice", "單據", "payment"];
-                const lines = text.split('\n');
-                for (let line of lines) {
-                    if (nameKeywords.some(k => line.toLowerCase().includes(k))) {
-                        name = line.replace(/[:：].*/, '').trim();
-                        break;
-                    }
-                }
-                if (!name) name = lines[0].substring(0, 30).trim();
-
-                const payableMatch = text.match(/(?:付給|payable to|pay to|抬頭|recipient)[:：]\s?([^\n,，]*)/i);
-                const accountMatch = text.match(/(?:帳號|帳戶|account|acc)[:：]?\s?([a-z0-9\-\s]{5,20})/i);
-
-                if (amountMatch) document.getElementById('bill-amount').value = amountMatch[1];
-                if (dateMatch) {
-                    let d = dateMatch[0].replace(/\//g, '-');
-                    if (d.match(/^\d{1,2}-\d{1,2}-\d{4}$/)) {
-                        const parts = d.split('-');
-                        d = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
-                    }
-                    document.getElementById('bill-due-date').value = d;
-                }
-                if (name) document.getElementById('bill-name').value = name;
-                if (payableMatch) document.getElementById('bill-payable').value = payableMatch[1].trim();
-                if (accountMatch) {
-                    const remark = document.getElementById('bill-remark');
-                    remark.value = (remark.value ? remark.value + "\n" : "") + "Acc: " + accountMatch[1].trim();
-                }
-
-                alert(state.lang === 'zh' ? '已嘗試提取資訊，請檢查並完善表單。' : 'Information extracted. Please review and complete the form.');
+                state.currentTab = e.target.getAttribute('data-tab');
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+                document.getElementById(`tab-${state.currentTab}`).classList.remove('hidden');
+                renderAll();
             });
-        }
-
-        // --- 彈窗控制 ---
-        const modals = {
-            bill: document.getElementById('bill-modal'),
-            payment: document.getElementById('payment-modal'),
-            template: document.getElementById('template-modal'),
-            export: document.getElementById('export-modal'),
-            category: document.getElementById('category-modal')
-        };
-
-        function openModal(m) { if(m) m.classList.remove('hidden'); }
-        function closeModal(m) { if(m) m.classList.add('hidden'); }
-        document.querySelectorAll('.close-modal').forEach(btn => {
-            btn.addEventListener('click', () => Object.values(modals).forEach(closeModal));
         });
 
-        // --- 帳單邏輯 ---
-        const addBillBtn = document.getElementById('add-bill-btn');
-        if(addBillBtn) {
-            addBillBtn.addEventListener('click', () => {
-                document.getElementById('bill-form').reset();
-                document.getElementById('bill-id').value = '';
-                const spInput = document.getElementById('smart-paste-input');
-                if(spInput) spInput.value = '';
-                openModal(modals.bill);
-            });
-        }
+        // ==========================================
+        // 5. 儀表板及數據卡片動態渲染
+        // ==========================================
+        function renderDashboard() {
+            const now = new Date();
+            let totalUnpaid = 0;
+            let due30Count = 0;
+            let overdueCount = 0;
+            let paidMonthSum = 0;
 
-        const billForm = document.getElementById('bill-form');
-        if(billForm) {
-            billForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const id = document.getElementById('bill-id').value || crypto.randomUUID();
-                const data = {
-                    id,
-                    name: document.getElementById('bill-name').value,
-                    category: document.getElementById('bill-category').value,
-                    amount: parseFloat(document.getElementById('bill-amount').value),
-                    amountType: document.getElementById('bill-amount-type').value,
-                    dueDate: document.getElementById('bill-due-date').value,
-                    payer: document.getElementById('bill-payer').value,
-                    frequency: document.getElementById('bill-frequency').value,
-                    payable: document.getElementById('bill-payable').value,
-                    account: document.getElementById('bill-account').value,
-                    remark: document.getElementById('bill-remark').value,
-                    status: 'Unpaid'
-                };
+            const overdueList = document.getElementById('overdue-list');
+            const upcomingList = document.getElementById('upcoming-30-list');
+            overdueList.innerHTML = '';
+            upcomingList.innerHTML = '';
 
-                const client = getSupabase();
-                if (client) {
-                    const idx = state.bills.findIndex(b => b.id === id);
-                    if (idx > -1) {
-                        data.status = state.bills[idx].status;
-                        data.payment = state.bills[idx].payment;
-                        await client.from('bills').update(data).eq('id', id);
+            state.bills.forEach(bill => {
+                const dueDate = new Date(bill.dueDate);
+                const diffTime = dueDate - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const amt = parseFloat(bill.amount) || 0;
+
+                if (bill.status === 'Unpaid') {
+                    if (diffDays < 0) {
+                        totalUnpaid += amt;
+                        overdueCount++;
+                        overdueList.innerHTML += createDashboardRow(bill, 'text-red-600', true);
                     } else {
-                        await client.from('bills').insert([data]);
-                    }
-                    await fetchFromCloud();
-                }
-
-                saveData();
-                closeModal(modals.bill);
-            });
-        }
-
-        // --- 付款與週期邏輯 ---
-        window.markAsPaid = (id) => {
-            const bill = state.bills.find(b => b.id === id);
-            if (!bill) return;
-            
-            document.getElementById('pay-bill-id').value = id;
-            document.getElementById('pay-summary').innerHTML = `
-                <div class="font-bold">${bill.name}</div>
-                <div>$${bill.amount.toLocaleString()} | ${bill.dueDate}</div>
-            `;
-            document.getElementById('pay-date').value = new Date().toISOString().split('T')[0];
-            updatePayFields('Transfer');
-            openModal(modals.payment);
-        };
-
-        const payMethod = document.getElementById('pay-method');
-        if(payMethod) {
-            payMethod.addEventListener('change', (e) => updatePayFields(e.target.value));
-        }
-
-        function updatePayFields(method) {
-            const container = document.getElementById('pay-dynamic-fields');
-            if(!container) return;
-            container.innerHTML = '';
-            if (method === 'Cheque') {
-                container.innerHTML = `
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Cheque No (支票號碼)</label>
-                        <input type="text" id="pay-cheque-no" required class="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg px-4 py-2 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Bank (銀行)</label>
-                        <input type="text" id="pay-bank" required class="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg px-4 py-2 outline-none">
-                    </div>
-                `;
-            } else if (method === 'Cash') {
-                container.innerHTML = `
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Location (地點)</label>
-                        <input type="text" id="pay-location" required class="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg px-4 py-2 outline-none">
-                    </div>
-                `;
-            }
-        }
-
-        const paymentForm = document.getElementById('payment-form');
-        if(paymentForm) {
-            paymentForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const id = document.getElementById('pay-bill-id').value;
-                const bill = state.bills.find(b => b.id === id);
-                if (!bill) return;
-
-                const method = document.getElementById('pay-method').value;
-                bill.status = 'Paid';
-                bill.payment = {
-                    method,
-                    date: document.getElementById('pay-date').value,
-                    chequeNo: document.getElementById('pay-cheque-no')?.value || '',
-                    bank: document.getElementById('pay-bank')?.value || '',
-                    location: document.getElementById('pay-location')?.value || ''
-                };
-
-                const client = getSupabase();
-                if (client) {
-                    await client.from('bills').update({ status: 'Paid', payment: bill.payment }).eq('id', id);
-
-                    if (bill.frequency !== 'One-time') {
-                        const nextDate = new Date(bill.dueDate);
-                        if (bill.frequency === 'Monthly') nextDate.setMonth(nextDate.getMonth() + 1);
-                        else if (bill.frequency === 'Quarterly') nextDate.setMonth(nextDate.getMonth() + 3);
-                        else if (bill.frequency === 'Semi-Annual') nextDate.setMonth(nextDate.getMonth() + 6);
-                        else if (bill.frequency === 'Annual') nextDate.setFullYear(nextDate.getFullYear() + 1);
-
-                        const nextDueDate = nextDate.toISOString().split('T')[0];
-                        const exists = state.bills.some(b => b.name === bill.name && b.dueDate === nextDueDate);
-                        
-                        if (!exists) {
-                            const nextBill = {
-                                ...bill,
-                                id: crypto.randomUUID(),
-                                dueDate: nextDueDate,
-                                amount: bill.amountType === 'variable' ? 0 : bill.amount,
-                                status: 'Unpaid',
-                                payment: null
-                            };
-                            await client.from('bills').insert([nextBill]);
+                        totalUnpaid += amt;
+                        if (diffDays <= 30) {
+                            due30Count++;
+                            upcomingList.innerHTML += createDashboardRow(bill, 'text-yellow-600', false);
                         }
                     }
-                    await fetchFromCloud();
+                } else if (bill.status === 'Paid' && bill.paymentDate) {
+                    const pDate = new Date(bill.paymentDate);
+                    if (pDate.getMonth() === now.getMonth() && pDate.getFullYear() === now.getFullYear()) {
+                        paidMonthSum += amt;
+                    }
                 }
-
-                saveData();
-                closeModal(modals.payment);
-            });
-        }
-
-        // --- 渲染數據功能組 ---
-        function renderDashboard() {
-            const now = new Date(); now.setHours(0,0,0,0);
-            const next30 = new Date(now); next30.setDate(now.getDate() + 30);
-
-            const unpaid = state.bills.filter(b => b.status === 'Unpaid');
-            const totalUnpaid = unpaid.reduce((s, b) => s + b.amount, 0);
-            const overdueBills = unpaid.filter(b => new Date(b.dueDate) < now);
-            const due30Bills = unpaid.filter(b => {
-                const d = new Date(b.dueDate); return d >= now && d <= next30;
             });
 
-            const paidThisMonth = state.bills.filter(b => {
-                if (b.status !== 'Paid' || !b.payment) return false;
-                const d = new Date(b.payment.date);
-                return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-            }).reduce((s, b) => s + b.amount, 0);
+            if(!overdueList.innerHTML) overdueList.innerHTML = `<div class="p-12 text-center text-gray-400 italic">${i18n[state.lang].noBills}</div>`;
+            if(!upcomingList.innerHTML) upcomingList.innerHTML = `<div class="p-12 text-center text-gray-400 italic">${i18n[state.lang].noBills}</div>`;
 
-            const el1 = document.getElementById('stat-total-unpaid'); if(el1) el1.innerText = `$${totalUnpaid.toLocaleString()}`;
-            const el2 = document.getElementById('stat-due-30'); if(el2) el2.innerText = due30Bills.length;
-            const el3 = document.getElementById('stat-overdue'); if(el3) el3.innerText = overdueBills.length;
-            const el4 = document.getElementById('stat-paid-month'); if(el4) el4.innerText = `$${paidThisMonth.toLocaleString()}`;
-
-            renderDashList('overdue-list', overdueBills);
-            renderDashList('upcoming-30-list', due30Bills);
+            document.getElementById('stat-total-unpaid').innerText = `$${totalUnpaid.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+            document.getElementById('stat-due-30').innerText = due30Count;
+            document.getElementById('stat-overdue').innerText = overdueCount;
+            document.getElementById('stat-paid-month').innerText = `$${paidMonthSum.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+            lucide.createIcons();
         }
 
-        function renderDashList(elId, bills) {
-            const list = document.getElementById(elId);
-            if(!list) return;
-            bills.sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate));
-            list.innerHTML = bills.length ? '' : `<div class="p-12 text-center text-gray-400 italic">${i18n[state.lang].noBills}</div>`;
+        function createDashboardRow(bill, colorClass, isOverdue) {
+            return `
+                <div class="p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <div>
+                        <div class="font-semibold text-sm">${bill.name}</div>
+                        <div class="text-xs text-gray-400 mt-0.5">${bill.category} | 到期日: ${bill.dueDate}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-sm ${colorClass}">$${parseFloat(bill.amount).toFixed(2)}</div>
+                        <button onclick="openPaymentModal('${bill.id}')" class="mt-1 text-xs text-blue-600 hover:underline flex items-center gap-1 justify-end">
+                            <i data-lucide="check" class="w-3 h-3"></i> 記為已付
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==========================================
+        // 6. 所有帳單清單及篩選邏輯
+        // ==========================================
+        function renderBillsTable() {
+            const tbody = document.getElementById('bills-table-body');
+            tbody.innerHTML = '';
+
+            const yFilter = document.getElementById('filter-year').value;
+            const mFilter = document.getElementById('filter-month').value;
+            const cFilter = document.getElementById('filter-category').value;
+            const sFilter = document.getElementById('filter-status').value;
+            const search = document.getElementById('search-bills').value.toLowerCase();
+
+            let filtered = state.bills.filter(bill => {
+                const d = new Date(bill.dueDate);
+                if (yFilter !== 'all' && d.getFullYear().toString() !== yFilter) return false;
+                if (mFilter !== 'all' && (d.getMonth() + 1).toString() !== mFilter) return false;
+                if (cFilter !== 'all' && bill.category !== cFilter) return false;
+                
+                if (sFilter !== 'all') {
+                    if (sFilter === 'Overdue') {
+                        return bill.status === 'Unpaid' && new Date(bill.dueDate) < new Date();
+                    }
+                    if (bill.status !== sFilter) return false;
+                }
+                
+                if (search && !bill.name.toLowerCase().includes(search) && !bill.remark?.toLowerCase().includes(search)) return false;
+                return true;
+            });
+
+            // 排序邏輯
+            filtered.sort((a, b) => {
+                let vA = a[state.sortField];
+                let vB = b[state.sortField];
+                if(state.sortField === 'amount') {
+                    vA = parseFloat(vA) || 0;
+                    vB = parseFloat(vB) || 0;
+                }
+                if (vA < vB) return state.sortOrder === 'asc' ? -1 : 1;
+                if (vA > vB) return state.sortOrder === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            filtered.forEach(bill => {
+                const isOverdue = bill.status === 'Unpaid' && new Date(bill.dueDate) < new Date();
+                let badge = `<span class="px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-slate-800 dark:text-slate-300">未知</span>`;
+                if (bill.status === 'Paid') badge = `<span class="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">已付</span>`;
+                else if (isOverdue) badge = `<span class="px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">逾期</span>`;
+                else if (bill.status === 'Unpaid') badge = `<span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">未付</span>`;
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="font-medium">${bill.name}</div>
+                            <div class="text-xs text-gray-400 mt-0.5">${bill.category} ${bill.frequency !== 'One-time' ? `• ${bill.frequency}` : ''}</div>
+                        </td>
+                        <td class="px-6 py-4 font-bold">$${parseFloat(bill.amount).toFixed(2)} <span class="text-[10px] text-gray-400 font-normal">(${bill.amountType || 'fixed'})</span></td>
+                        <td class="px-6 py-4 text-gray-500 dark:text-slate-400">${bill.dueDate}</td>
+                        <td class="px-6 py-4">${badge}</td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                ${bill.status === 'Unpaid' ? `<button onclick="openPaymentModal('${bill.id}')" class="p-1.5 bg-green-50 hover:bg-green-100 text-green-600 rounded-md transition-colors"><i data-lucide="check" class="w-4 h-4"></i></button>` : ''}
+                                <button onclick="editBill('${bill.id}')" class="p-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-400 rounded-md transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                                <button onclick="deleteBill('${bill.id}')" class="p-1.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-md transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        // 下拉選單年份與類別動態渲染更新
+        function updateFilterOptions() {
+            const years = [...new Set(state.bills.map(b => new Date(b.dueDate).getFullYear()))].sort((a,b)=>b-a);
+            const ySelect = document.getElementById('filter-year');
+            const cSelect = document.getElementById('filter-category');
             
-            bills.forEach(b => {
-                const isOverdue = new Date(b.dueDate) < new Date().setHours(0,0,0,0);
-                list.innerHTML += `
-                    <div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <div class="w-1.5 h-8 rounded-full ${isOverdue ? 'bg-red-500' : 'bg-blue-500'}"></div>
+            const selectedY = ySelect.value;
+            const selectedC = cSelect.value;
+
+            ySelect.innerHTML = `<option value="all">${i18n[state.lang].allYears}</option>`;
+            years.forEach(y => ySelect.innerHTML += `<option value="${y}">${y}</option>`);
+
+            cSelect.innerHTML = `<option value="all">${i18n[state.lang].allCategories}</option>`;
+            state.categories.forEach(c => cSelect.innerHTML += `<option value="${c}">${c}</option>`);
+
+            const formCat = document.getElementById('bill-category');
+            if (formCat) {
+                formCat.innerHTML = '';
+                state.categories.forEach(c => formCat.innerHTML += `<option value="${c}">${c}</option>`);
+            }
+
+            ySelect.value = selectedY || 'all';
+            cSelect.value = selectedC || 'all';
+        }
+
+        // ==========================================
+        // 7. 範本管理與渲染邏輯
+        // ==========================================
+        function renderTemplates() {
+            const grid = document.getElementById('templates-grid');
+            grid.innerHTML = '';
+
+            state.templates.forEach(t => {
+                grid.innerHTML += `
+                    <div class="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-xl p-5 shadow-sm hover:shadow-md transition-all relative group">
+                        <div class="flex items-start justify-between mb-3">
                             <div>
-                                <div class="font-bold text-gray-900 dark:text-slate-200">${b.name}</div>
-                                <div class="text-[10px] text-gray-500 flex items-center gap-1">
-                                    <i data-lucide="calendar" class="w-3 h-3"></i> ${b.dueDate}
-                                    <span class="mx-1">•</span>
-                                    <span class="px-1 rounded bg-gray-100 dark:bg-slate-700 uppercase">${b.category}</span>
-                                </div>
+                                <h5 class="font-bold text-base text-gray-900 dark:text-white">${t.name}</h5>
+                                <span class="text-xs bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded font-medium mt-1 inline-block">${t.category}</span>
+                            </div>
+                            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onclick="editTemplate('${t.id}')" class="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-white"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                                <button onclick="deleteTemplate('${t.id}')" class="p-1 text-gray-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="font-bold text-gray-900 dark:text-slate-200">$${b.amount.toLocaleString()}</div>
-                            <button onclick="markAsPaid('${b.id}')" class="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded font-bold uppercase hover:bg-blue-700 transition-colors">${state.lang === 'zh' ? '付款' : 'Pay'}</button>
+                        <div class="space-y-1.5 text-xs text-gray-500 dark:text-slate-400 border-t border-gray-50 dark:border-slate-700/50 pt-3">
+                            <div class="flex justify-between"><span>金額型態:</span> <span class="font-medium text-gray-700 dark:text-slate-300">${t.amountType || 'fixed'}</span></div>
+                            <div class="flex justify-between"><span>預設付款人:</span> <span class="font-medium text-gray-700 dark:text-slate-300">${t.payer || '-'}</span></div>
+                            <div class="flex justify-between"><span>支票抬頭:</span> <span class="font-medium text-gray-700 dark:text-slate-300 truncate max-w-[150px]">${t.payable || '-'}</span></div>
                         </div>
+                        <button onclick="applyTemplateToBill('${t.id}')" class="w-full mt-4 text-xs bg-gray-50 dark:bg-slate-700/50 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 text-blue-600 dark:text-blue-400 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-1">
+                            <i data-lucide="copy" class="w-3 h-3"></i> 快速應用至新帳單
+                        </button>
                     </div>
                 `;
             });
-            if(window.lucide) lucide.createIcons();
-        }
 
-        function renderBillsTable() {
-            const tbody = document.getElementById('bills-table-body');
-            if (!tbody) return;
-            const searchEl = document.getElementById('search-bills');
-            const search = searchEl ? searchEl.value.toLowerCase() : '';
-            const year = document.getElementById('filter-year').value;
-            const month = document.getElementById('filter-month').value;
-            const cat = document.getElementById('filter-category').value;
-            const statusFilter = document.getElementById('filter-status').value;
-
-            let filtered = state.bills.filter(b => {
-                const date = new Date(b.dueDate);
-                const mSearch = b.name.toLowerCase().includes(search) || (b.remark && b.remark.toLowerCase().includes(search));
-                const mYear = year === 'all' || date.getFullYear().toString() === year;
-                const mMonth = month === 'all' || (date.getMonth() + 1).toString() === month;
-                const mCat = cat === 'all' || b.category === cat;
-                
-                let mStatus = statusFilter === 'all' || b.status === statusFilter;
-                if (statusFilter === 'Overdue') {
-                    const now = new Date(); now.setHours(0,0,0,0);
-                    mStatus = b.status === 'Unpaid' && new Date(b.dueDate) < now;
-                }
-                return mSearch && mYear && mMonth && mCat && mStatus;
-            });
-
-            filtered.sort((a, b) => {
-                let valA, valB;
-                if (state.sort.field === 'amount') { valA = a.amount; valB = b.amount; }
-                else if (state.sort.field === 'dueDate') { valA = new Date(a.dueDate).getTime(); valB = new Date(b.dueDate).getTime(); }
-                else if (state.sort.field === 'status') { 
-                    const order = { 'Overdue': 0, 'Unpaid': 1, 'Paid': 2 };
-                    const getStatus = (bill) => {
-                        if (bill.status === 'Paid') return 'Paid';
-                        if (new Date(bill.dueDate) < new Date().setHours(0,0,0,0)) return 'Overdue';
-                        return 'Unpaid';
-                    };
-                    valA = order[getStatus(a)]; valB = order[getStatus(b)];
-                }
-                return state.sort.order === 'asc' ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
-            });
-
-            tbody.innerHTML = filtered.length ? '' : `<tr><td colspan="5" class="p-12 text-center text-gray-400 italic">${i18n[state.lang].noBills}</td></tr>`;
-
-            filtered.forEach(b => {
-                const isOverdue = new Date(b.dueDate) < new Date().setHours(0,0,0,0) && b.status === 'Unpaid';
-                const statusLabel = b.status === 'Paid' ? i18n[state.lang].paid : (isOverdue ? i18n[state.lang].overdue : i18n[state.lang].unpaid);
-                const statusClass = b.status === 'Paid' ? 'bg-green-100 text-green-700' : (isOverdue ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700');
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors cursor-pointer" onclick="toggleBillDetail('${b.id}')">
-                        <td class="px-6 py-4">
-                            <div class="font-bold text-gray-900 dark:text-slate-200 flex items-center gap-2">
-                                <i data-lucide="chevron-right" class="w-3 h-3 transition-transform" id="icon-${b.id}"></i>
-                                ${b.name}
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 font-bold">$${b.amount.toLocaleString()}</td>
-                        <td class="px-6 py-4"><div class="${isOverdue ? 'text-red-600 font-bold' : ''}">${b.dueDate}</div></td>
-                        <td class="px-6 py-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusClass}">${statusLabel}</span></td>
-                        <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
-                            <div class="flex justify-end gap-1">
-                                ${b.status === 'Unpaid' ? `<button onclick="markAsPaid('${b.id}')" class="p-1.5 hover:bg-green-50 text-green-600 rounded"><i data-lucide="check-square" class="w-4 h-4"></i></button>` : `<button onclick="recallPayment('${b.id}')" class="p-1.5 hover:bg-orange-50 text-orange-600 rounded" title="${i18n[state.lang].recallPayment}"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>`}
-                                <button onclick="editBill('${b.id}')" class="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                                <button onclick="deleteBill('${b.id}')" class="p-1.5 hover:bg-red-50 text-red-600 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr id="detail-${b.id}" class="hidden bg-gray-50/50 dark:bg-slate-800/30">
-                        <td colspan="5" class="px-12 py-6">
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
-                                <div><p class="text-gray-500 font-medium">${i18n[state.lang].category}</p><p>${b.category}</p></div>
-                                <div><p class="text-gray-500 font-medium">${i18n[state.lang].payer}</p><p>${b.payer || '-'}</p></div>
-                                <div><p class="text-gray-500 font-medium">${i18n[state.lang].payableTo}</p><p>${b.payable || '-'}</p></div>
-                                <div><p class="text-gray-500 font-medium">${i18n[state.lang].accountNo}</p><p>${b.account || '-'}</p></div>
-                                <div><p class="text-gray-500 font-medium">${i18n[state.lang].frequency}</p><p>${i18n[state.lang][b.frequency.toLowerCase()] || b.frequency}</p></div>
-                                <div class="col-span-2"><p class="text-gray-500 font-medium">${i18n[state.lang].remark}</p><p>${b.remark || '-'}</p></div>
-                                ${b.payment ? `
-                                <div class="col-span-2 bg-green-50 dark:bg-green-900/10 p-3 rounded-lg border border-green-100">
-                                    <p class="font-bold text-green-700 mb-1">${i18n[state.lang].confirmPayment}</p>
-                                    <p>${b.payment.date} | ${b.payment.method} ${b.payment.chequeNo ? `(#${b.payment.chequeNo} @ ${b.payment.bank})` : ''}</p>
-                                </div>` : ''}
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-            if(window.lucide) lucide.createIcons();
-        }
-
-        window.toggleBillDetail = (id) => {
-            const row = document.getElementById(`detail-${id}`);
-            const icon = document.getElementById(`icon-${id}`);
-            if(!row) return;
-            row.classList.toggle('hidden');
-            if(icon) icon.style.transform = row.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
-        };
-
-        ['sort-amount', 'sort-date', 'sort-status'].forEach(id => {
-            const el = document.getElementById(id);
-            if(el) {
-                el.addEventListener('click', () => {
-                    const field = id.replace('sort-', '');
-                    if (state.sort.field === field) state.sort.order = state.sort.order === 'asc' ? 'desc' : 'asc';
-                    else { state.sort.field = field; state.sort.order = 'asc'; }
-                    renderBillsTable();
-                });
+            // 聯動更新新增帳單時的範本下拉選單
+            const select = document.getElementById('bill-template-select');
+            if (select) {
+                select.innerHTML = '<option value="">選擇範本...</option>';
+                state.templates.forEach(t => select.innerHTML += `<option value="${t.id}">${t.name}</option>`);
             }
-        });
+            lucide.createIcons();
+        }
 
+        // ==========================================
+        // 8. 歷史紀錄分月份渲染
+        // ==========================================
         function renderHistory() {
             const container = document.getElementById('history-content');
-            if(!container) return;
-            const year = document.getElementById('history-year').value;
-            const month = document.getElementById('history-month').value;
-            const searchEl = document.getElementById('search-history');
-            const search = searchEl ? searchEl.value.toLowerCase() : '';
-            const paidBills = state.bills.filter(b => b.status === 'Paid' && b.payment);
-            
+            container.innerHTML = '';
+
+            const paidBills = state.bills.filter(b => b.status === 'Paid' && b.paymentDate);
+            const search = document.getElementById('search-history').value.toLowerCase();
+
+            // 按付款時間分群組
             const groups = {};
             paidBills.forEach(b => {
-                const d = new Date(b.payment.date);
-                const mYear = year === 'all' || d.getFullYear().toString() === year;
-                const mMonth = month === 'all' || (d.getMonth() + 1).toString() === month;
-                const searchMatch = !search || b.name.toLowerCase().includes(search) || b.amount.toString().includes(search);
-
-                if (!mYear || !mMonth || !searchMatch) return;
-                const key = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+                if (search && !b.name.toLowerCase().includes(search) && !b.remark?.toLowerCase().includes(search)) return;
+                const pDate = new Date(b.paymentDate);
+                const key = `${pDate.getFullYear()}-${String(pDate.getMonth() + 1).padStart(2, '0')}`;
                 if (!groups[key]) groups[key] = [];
                 groups[key].push(b);
             });
 
             const sortedKeys = Object.keys(groups).sort().reverse();
-            container.innerHTML = sortedKeys.length ? '' : `<div class="text-center py-12 text-gray-400 italic">${i18n[state.lang].noBills}</div>`;
+            if(sortedKeys.length === 0) {
+                container.innerHTML = `<div class="p-12 text-center text-gray-400 italic">${i18n[state.lang].noBills}</div>`;
+                return;
+            }
 
             sortedKeys.forEach(key => {
                 const bills = groups[key];
-                const total = bills.reduce((s, b) => s + b.amount, 0);
-                container.innerHTML += `
-                    <div class="border border-gray-100 dark:border-slate-800 rounded-xl overflow-hidden mb-6">
-                        <div class="bg-gray-50 dark:bg-slate-800 px-4 py-3 flex justify-between items-center">
-                            <span class="font-bold">${key}</span>
-                            <span class="text-sm font-bold text-green-600">Total: $${total.toLocaleString()}</span>
+                const sum = bills.reduce((acc, b) => acc + (parseFloat(b.amount) || 0), 0);
+                
+                let html = `
+                    <div class="border border-gray-100 dark:border-slate-800 rounded-xl overflow-hidden bg-gray-50/30 dark:bg-slate-800/20">
+                        <div class="bg-gray-50 dark:bg-slate-800 px-4 py-3 flex justify-between items-center border-b border-gray-100 dark:border-slate-700">
+                            <span class="font-bold text-sm">${key}</span>
+                            <span class="text-sm font-bold text-green-600">已付總計: $${sum.toFixed(2)}</span>
                         </div>
-                        <div class="divide-y divide-gray-50 dark:divide-slate-800">
-                            ${bills.map(b => `
-                                <div class="px-4 py-3 flex justify-between items-center text-sm group cursor-pointer hover:bg-gray-50" onclick="toggleBillDetail('${b.id}')">
-                                    <div class="flex items-center gap-3">
-                                        <i data-lucide="chevron-right" class="w-3 h-3 transition-transform" id="icon-${b.id}"></i>
-                                        <div>
-                                            <div class="font-medium">${b.name}</div>
-                                            <div class="text-[10px] text-gray-500">Paid: ${b.payment.date}</div>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-4">
-                                        <div class="font-bold">$${b.amount.toLocaleString()}</div>
-                                        <button onclick="event.stopPropagation(); recallPayment('${b.id}')" class="p-1.5 opacity-0 group-hover:opacity-100 text-orange-600 rounded">
-                                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
+                        <div class="divide-y divide-gray-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
                 `;
-            });
-            if(window.lucide) lucide.createIcons();
-        }
 
-        function renderTemplates() {
-            const grid = document.getElementById('templates-grid');
-            const select = document.getElementById('bill-template-select');
-            if(!grid || !select) return;
-            grid.innerHTML = state.templates.length ? '' : `<div class="col-span-full p-12 text-center text-gray-400 border-2 border-dashed rounded-xl">No templates yet.</div>`;
-            select.innerHTML = `<option value="">${state.lang === 'zh' ? '選擇範本...' : 'Select template...'}</option>`;
-
-            state.templates.forEach(t => {
-                grid.innerHTML += `
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md group">
-                        <div class="flex justify-between items-start mb-4">
+                bills.forEach(b => {
+                    html += `
+                        <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
                             <div>
-                                <h5 class="font-bold text-gray-900 dark:text-slate-200">${t.name}</h5>
-                                <span class="text-[10px] bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded uppercase">${t.category}</span>
+                                <div class="font-semibold text-gray-900 dark:text-white">${b.name}</div>
+                                <div class="text-xs text-gray-400 mt-1">
+                                    類別: ${b.category} | 付款日: ${b.paymentDate} | 方式: ${b.paymentMethod || '轉帳'}
+                                    ${b.chequeNo ? ` | 支票號碼: ${b.chequeNo}` : ''}
+                                    ${b.bankRef ? ` | 銀行流水: ${b.bankRef}` : ''}
+                                </div>
                             </div>
-                            <div class="flex gap-2 opacity-0 group-hover:opacity-100">
-                                <button onclick="editTemplate('${t.id}')" class="p-1.5 text-blue-600 rounded"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                                <button onclick="deleteTemplate('${t.id}')" class="p-1.5 text-red-600 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            </div>
+                            <div class="text-right font-bold text-green-600 sm:min-w-[100px]">$${parseFloat(b.amount).toFixed(2)}</div>
                         </div>
-                    </div>
-                `;
-                select.innerHTML += `<option value="${t.id}">${t.name}</option>`;
-            });
-            if(window.lucide) lucide.createIcons();
-        }
-
-        const bTplSelect = document.getElementById('bill-template-select');
-        if(bTplSelect) {
-            bTplSelect.addEventListener('change', (e) => {
-                const tpl = state.templates.find(t => t.id === e.target.value);
-                if (tpl) {
-                    document.getElementById('bill-name').value = tpl.name;
-                    document.getElementById('bill-category').value = tpl.category;
-                    document.getElementById('bill-payer').value = tpl.payer || '';
-                    document.getElementById('bill-payable').value = tpl.payable || '';
-                    document.getElementById('bill-account').value = tpl.account || '';
-                    document.getElementById('bill-amount-type').value = tpl.amountType || 'fixed';
-                    if (tpl.address) document.getElementById('bill-remark').value = tpl.address;
-                }
-            });
-        }
-
-        const mCatBtn = document.getElementById('manage-cats-btn');
-        if(mCatBtn) {
-            mCatBtn.addEventListener('click', () => {
-                renderCatList(); openModal(modals.category);
-            });
-        }
-
-        const aCatBtn = document.getElementById('add-cat-btn');
-        if(aCatBtn) {
-            aCatBtn.addEventListener('click', async () => {
-                const input = document.getElementById('new-cat-input');
-                const val = input.value.trim();
-                const client = getSupabase();
-                if (val && !state.categories.includes(val) && client) {
-                    await client.from('categories').insert([{ name: val }]);
-                    await fetchFromCloud();
-                    input.value = '';
-                    renderCatList();
-                    updateFilterOptions();
-                }
-            });
-        }
-
-        window.deleteCategory = async (cat) => {
-            const client = getSupabase();
-            if (confirm(`Delete category "${cat}"?`) && client) {
-                await client.from('categories').delete().eq('name', cat);
-                await fetchFromCloud();
-                renderCatList();
-                updateFilterOptions();
-            }
-        };
-
-        function renderCatList() {
-            const list = document.getElementById('cat-list');
-            if(!list) return;
-            list.innerHTML = state.categories.map(c => `
-                <div class="flex justify-between items-center p-2 bg-gray-50 dark:bg-slate-800 rounded">
-                    <span>${c}</span>
-                    <button onclick="deleteCategory('${c}')" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                </div>
-            `).join('');
-            if(window.lucide) lucide.createIcons();
-        }
-
-        function updateFilterOptions() {
-            const years = [...new Set(state.bills.map(b => new Date(b.dueDate).getFullYear()))].sort().reverse();
-            const ySelect = document.getElementById('filter-year');
-            const hySelect = document.getElementById('history-year');
-            if(!ySelect) return;
-            
-            const currentY = ySelect.value;
-            ySelect.innerHTML = `<option value="all">${i18n[state.lang].allYears}</option>`;
-            if(hySelect) hySelect.innerHTML = `<option value="all">${i18n[state.lang].allYears}</option>`;
-            
-            years.forEach(y => {
-                const opt = `<option value="${y}" ${y.toString() === currentY ? 'selected' : ''}>${y}</option>`;
-                ySelect.innerHTML += opt; if(hySelect) hySelect.innerHTML += opt;
-            });
-
-            ['filter-category', 'bill-category', 'tpl-category'].forEach(id => {
-                const el = document.getElementById(id); if (!el) return;
-                const current = el.value;
-                el.innerHTML = id === 'filter-category' ? `<option value="all">${i18n[state.lang].allCategories}</option>` : '';
-                state.categories.forEach(c => {
-                    el.innerHTML += `<option value="${c}" ${c === current ? 'selected' : ''}>${c}</option>`;
+                    `;
                 });
+
+                html += `</div></div>`;
+                container.innerHTML += html;
             });
         }
-
-        const tLangBtn = document.getElementById('toggle-lang');
-        if(tLangBtn) {
-            tLangBtn.addEventListener('click', () => { state.lang = state.lang === 'zh' ? 'en' : 'zh'; saveData(); updateUI(); });
-        }
-        const tDarkBtn = document.getElementById('toggle-dark');
-        if(tDarkBtn) {
-            tDarkBtn.addEventListener('click', () => { state.dark = !state.dark; saveData(); updateUI(); });
-        }
-
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('tab-active'));
-                tab.classList.add('tab-active');
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-                const targetTab = document.getElementById(`tab-${tab.dataset.tab}`);
-                if(targetTab) targetTab.classList.remove('hidden');
-                state.currentTab = tab.dataset.tab;
-                renderAll();
-            });
-        });
-
-        const expBtn = document.getElementById('export-btn'); if(expBtn) expBtn.addEventListener('click', () => openModal(modals.export));
-        const expAll = document.getElementById('export-all'); if(expAll) expAll.addEventListener('click', () => exportData('all'));
-        const expUnpaid = document.getElementById('export-unpaid'); if(expUnpaid) expUnpaid.addEventListener('click', () => exportData('unpaid'));
-        const expMonth = document.getElementById('export-monthly'); if(expMonth) expMonth.addEventListener('click', () => exportData('monthly'));
-
-        function exportData(type) {
-            let data = [...state.bills]; const now = new Date();
-            if (type === 'unpaid') data = data.filter(b => b.status === 'Unpaid');
-            else if (type === 'monthly') data = data.filter(b => { const d = new Date(b.dueDate); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); });
-            
-            if (data.length === 0) { alert(state.lang === 'zh' ? '沒有可匯出的資料' : 'No data to export'); return; }
-            data.sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate));
-
-            const headers = ['Bill Name', 'Category', 'Amount', 'Due Date', 'Status', 'Frequency', 'Remark'];
-            const rows = data.map(b => [`"${b.name}"`, `"${b.category}"`, b.amount, b.dueDate, `"${b.status}"`, `"${b.frequency}"`, `"${(b.remark || '')}"`]);
-            let csvContent = "\uFEFF" + headers.join(",") + "\n" + rows.map(r => r.join(",")).join("\n");
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.setAttribute("download", `Bills_${type}_${now.toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link); link.click(); document.body.removeChild(link);
-            closeModal(modals.export);
-        }
-
-        window.deleteBill = async (id) => {
-            const client = getSupabase();
-            if(confirm('Confirm delete?') && client) {
-                await client.from('bills').delete().eq('id', id);
-                await fetchFromCloud(); saveData();
-            }
-        };
-
-        window.recallPayment = async (id) => {
-            const client = getSupabase();
-            if (confirm(i18n[state.lang].confirmRecall) && client) {
-                await client.from('bills').update({ status: 'Unpaid', payment: null }).eq('id', id);
-                await fetchFromCloud(); saveData();
-            }
-        };
-
-        window.editBill = (id) => {
-            const b = state.bills.find(x => x.id === id); if(!b) return;
-            document.getElementById('bill-id').value = b.id;
-            document.getElementById('bill-name').value = b.name;
-            document.getElementById('bill-category').value = b.category;
-            document.getElementById('bill-amount').value = b.amount;
-            document.getElementById('bill-amount-type').value = b.amountType || 'fixed';
-            document.getElementById('bill-due-date').value = b.dueDate;
-            document.getElementById('bill-payer').value = b.payer || '';
-            document.getElementById('bill-frequency').value = b.frequency;
-            document.getElementById('bill-payable').value = b.payable || '';
-            document.getElementById('bill-account').value = b.account || '';
-            document.getElementById('bill-remark').value = b.remark || '';
-            openModal(modals.bill);
-        };
-
-        const addTplBtn = document.getElementById('add-template-btn');
-        if(addTplBtn) {
-            addTplBtn.addEventListener('click', () => {
-                document.getElementById('template-form').reset();
-                document.getElementById('template-id').value = '';
-                openModal(modals.template);
-            });
-        }
-
-        const tplForm = document.getElementById('template-form');
-        if(tplForm) {
-            tplForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const id = document.getElementById('template-id').value || crypto.randomUUID();
-                const data = {
-                    id, name: document.getElementById('tpl-name').value, category: document.getElementById('tpl-category').value,
-                    payer: document.getElementById('tpl-payer').value, payable: document.getElementById('tpl-payable').value,
-                    account: document.getElementById('tpl-account').value, address: document.getElementById('tpl-address').value,
-                    amountType: document.getElementById('tpl-amount-type').value
-                };
-                const client = getSupabase();
-                if(client) {
-                    const idx = state.templates.findIndex(t => t.id === id);
-                    if (idx > -1) await client.from('templates').update(data).eq('id', id);
-                    else await client.from('templates').insert([data]);
-                    await fetchFromCloud();
-                }
-                saveData(); closeModal(modals.template);
-            });
-        }
-
-        window.deleteTemplate = async (id) => {
-            const client = getSupabase();
-            if(confirm('Delete template?') && client) {
-                await client.from('templates').delete().eq('id', id);
-                await fetchFromCloud(); saveData();
-            }
-        };
-
-        window.editTemplate = (id) => {
-            const t = state.templates.find(x => x.id === id); if(!t) return;
-            document.getElementById('template-id').value = t.id;
-            document.getElementById('tpl-name').value = t.name;
-            document.getElementById('tpl-category').value = t.category;
-            document.getElementById('tpl-payer').value = t.payer || '';
-            document.getElementById('tpl-payable').value = t.payable || '';
-            document.getElementById('tpl-account').value = t.account || '';
-            document.getElementById('tpl-address').value = t.address || '';
-            document.getElementById('tpl-amount-type').value = t.amountType || 'fixed';
-            openModal(modals.template);
-        };
 
         function renderAll() {
-            renderDashboard(); renderBillsTable(); renderTemplates(); renderHistory(); updateFilterOptions();
+            renderDashboard();
+            renderBillsTable();
+            renderTemplates();
+            renderHistory();
+            updateFilterOptions();
         }
 
-        ['filter-year', 'filter-month', 'filter-category', 'filter-status', 'search-bills'].forEach(id => {
-            const el = document.getElementById(id); if(el) el.addEventListener('input', renderBillsTable);
-        });
-        const hYear = document.getElementById('history-year'); if(hYear) hYear.addEventListener('change', renderHistory);
-        const hMonth = document.getElementById('history-month'); if(hMonth) hMonth.addEventListener('change', renderHistory);
-        const sHist = document.getElementById('search-history'); if(sHist) sHist.addEventListener('input', renderHistory);
-
-        // 啟動加載
-        (async () => {
-            updateUI();
-            setTimeout(async () => {
-                const synced = await fetchFromCloud();
-                if(synced) updateUI();
-            }, 1000);
-        })();
-        // --- I18n ---
-        const i18n = {
-            zh: {
-                title: "公司帳單管理系統",
-                addBill: "新增帳單",
-                export: "匯出",
-                statUnpaid: "未付總額",
-                stat30: "30天內到期",
-                statOverdue: "已逾期",
-                statPaid: "本月已付",
-                tabDashboard: "儀表板",
-                tabBills: "所有帳單",
-                tabTemplates: "範本管理",
-                tabHistory: "歷史紀錄",
-                next30: "未來 30 天",
-                upcoming: "即將到期",
-                noBills: "暫無帳單",
-                allYears: "所有年份",
-                allMonths: "所有月份",
-                allCategories: "所有類別",
-                thName: "帳單名稱",
-                thCategory: "類別",
-                thAmount: "金額",
-                thDueDate: "到期日",
-                thStatus: "狀態",
-                thActions: "操作",
-                vendorTemplates: "範本管理",
-                createTemplate: "建立新範本",
-                paymentHistory: "付款歷史紀錄",
-                smartPaste: "智能貼上 (從訊息自動提取資訊)",
-                extractInfo: "提取資訊",
-                useTemplate: "使用範本",
-                billName: "帳單名稱 *",
-                category: "類別 *",
-                amount: "金額 *",
-                amountType: "金額類型",
-                fixed: "固定 (Fixed)",
-                variable: "變動 (Variable)",
-                dueDate: "到期日 *",
-                payer: "付款人",
-                frequency: "支付週期",
-                payableTo: "支票抬頭 (Payable To)",
-                remark: "備註",
-                cancel: "取消",
-                save: "儲存",
-                confirmPayment: "確認付款資訊",
-                paymentMethod: "付款方式",
-                paymentDate: "付款日期",
-                confirm: "確認已付",
-                tplName: "範本名稱 (例如: KH11A)",
-                exportOptions: "匯出選項",
-                exportAll: "匯出所有資料",
-                exportAllDesc: "包含所有年份、已付及未付帳單",
-                exportUnpaid: "匯出未付帳單",
-                exportUnpaidDesc: "僅匯出目前待處理的帳單",
-                exportMonth: "匯出本月報表",
-                exportMonthDesc: "匯出本月所有相關帳單紀錄",
-                exportUpcoming2: "匯出未來 2 個月待付",
-                exportUpcoming2Desc: "匯出未來 60 天內所有未付帳單",
-                paid: "已付",
-                unpaid: "未付",
-                overdue: "逾期",
-                monthly: "每月固定支付 (Monthly)",
-                oneTime: "單次支付 (One-time)",
-                semiAnnual: "每半年支付 (Semi-Annual)",
-                quarterly: "每季支付 (Quarterly)",
-                annual: "每年支付 (Annual)",
-                allStatus: "所有狀態",
-                urgent: "緊急",
-                manageCategories: "管理類別",
-                addCategory: "新增類別",
-                categoryName: "類別名稱",
-                address: "地址/資訊",
-                accountNo: "付款帳號",
-                thAmountSort: "金額排序",
-                thDateSort: "日期排序",
-                thStatusSort: "狀態排序",
-                recallPayment: "撤回付款",
-                confirmRecall: "確定要撤回此筆付款並將其標記為未付嗎？"
-            },
-            en: {
-                title: "Bill Management System",
-                addBill: "Add New Bill",
-                export: "Export",
-                statUnpaid: "Total Unpaid",
-                stat30: "Due in 30 Days",
-                statOverdue: "Overdue",
-                statPaid: "Paid this Month",
-                tabDashboard: "Dashboard",
-                tabBills: "All Bills",
-                tabTemplates: "Templates",
-                tabHistory: "History",
-                next30: "Next 30 Days",
-                upcoming: "Upcoming",
-                noBills: "No bills found",
-                allYears: "All Years",
-                allMonths: "All Months",
-                allCategories: "All Categories",
-                thName: "Bill Name",
-                thCategory: "Category",
-                thAmount: "Amount",
-                thDueDate: "Due Date",
-                thStatus: "Status",
-                thActions: "Actions",
-                vendorTemplates: "Templates",
-                createTemplate: "New Template",
-                paymentHistory: "Payment History",
-                smartPaste: "Smart Paste (Auto-extract from text)",
-                extractInfo: "Extract Info",
-                useTemplate: "Use Template",
-                billName: "Bill Name *",
-                category: "Category *",
-                amount: "Amount *",
-                amountType: "Amount Type",
-                fixed: "Fixed",
-                variable: "Variable",
-                dueDate: "Due Date *",
-                payer: "Payer",
-                frequency: "Payment Cycle",
-                payableTo: "Payable To",
-                remark: "Remark",
-                cancel: "Cancel",
-                save: "Save Bill",
-                confirmPayment: "Confirm Payment",
-                paymentMethod: "Payment Method",
-                paymentDate: "Payment Date",
-                confirm: "Confirm Paid",
-                tplName: "Template Name (e.g. KH11A)",
-                exportOptions: "Export Options",
-                exportAll: "Export All Data",
-                exportAllDesc: "Includes all years, paid and unpaid",
-                exportUnpaid: "Export Unpaid Only",
-                exportUnpaidDesc: "Only export pending bills",
-                exportMonth: "Export Monthly Report",
-                exportMonthDesc: "Export all records for this month",
-                exportUpcoming2: "Export Upcoming 2 Months",
-                exportUpcoming2Desc: "Export all unpaid bills for next 60 days",
-                paid: "Paid",
-                unpaid: "Unpaid",
-                overdue: "Overdue",
-                monthly: "Monthly Recurring",
-                oneTime: "One-time Payment",
-                semiAnnual: "Semi-Annual Recurring",
-                quarterly: "Quarterly Recurring",
-                annual: "Annual Recurring",
-                allStatus: "All Status",
-                urgent: "Urgent",
-                manageCategories: "Categories",
-                addCategory: "Add Category",
-                categoryName: "Category Name",
-                address: "Address/Info",
-                accountNo: "Payment Account No",
-                thAmountSort: "Sort by Amount",
-                thDateSort: "Sort by Date",
-                thStatusSort: "Sort by Status",
-                recallPayment: "Recall Payment",
-                confirmRecall: "Are you sure you want to recall this payment and mark it as unpaid?"
-            }
-        };
-
-        // --- State ---
-        let state = {
-            lang: localStorage.getItem('bm_lang') || 'zh',
-            dark: localStorage.getItem('bm_dark') === 'true',
-            bills: JSON.parse(localStorage.getItem('bm_bills') || '[]'),
-            templates: JSON.parse(localStorage.getItem('bm_templates') || '[]'),
-            categories: JSON.parse(localStorage.getItem('bm_categories') || '["Utilities", "Rent", "Marketing", "Loans", "Telecom", "Others"]'),
-            currentTab: 'dashboard',
-            sort: { field: 'dueDate', order: 'asc' }
-        };
-
-        // --- Core Functions ---
-        function migrateData() {
-            // Ensure all bills and templates have an amountType
-            state.bills.forEach(b => {
-                if (!b.amountType) b.amountType = 'fixed';
-            });
-            state.templates.forEach(t => {
-                if (!t.amountType) t.amountType = 'fixed';
-            });
-        }
-
-        function updateUI() {
-            migrateData();
-            // Dark Mode
-            if (state.dark) document.documentElement.classList.add('dark');
-            else document.documentElement.classList.remove('dark');
-            document.getElementById('dark-icon').setAttribute('data-lucide', state.dark ? 'sun' : 'moon');
-            
-            // Language
-            document.getElementById('lang-text').innerText = state.lang === 'zh' ? 'EN' : '中文';
-            document.querySelectorAll('[data-t]').forEach(el => {
-                const key = el.getAttribute('data-t');
-                if (i18n[state.lang][key]) {
-                    if (el.tagName === 'INPUT' && el.getAttribute('placeholder')) {
-                        el.setAttribute('placeholder', i18n[state.lang][key]);
-                    } else {
-                        el.innerText = i18n[state.lang][key];
-                    }
-                }
-            });
-
-            lucide.createIcons();
-            renderAll();
-        }
-
-        function saveData() {
-            localStorage.setItem('bm_bills', JSON.stringify(state.bills));
-            localStorage.setItem('bm_templates', JSON.stringify(state.templates));
-            localStorage.setItem('bm_categories', JSON.stringify(state.categories));
-            localStorage.setItem('bm_lang', state.lang);
-            localStorage.setItem('bm_dark', state.dark);
-            renderAll();
-        }
-
-        // --- Smart Paste Logic ---
+        // ==========================================
+        // 9. 智能提取資訊 (Smart Paste) 核心優化
+        // ==========================================
         document.getElementById('apply-smart-paste').addEventListener('click', () => {
             const text = document.getElementById('smart-paste-input').value;
-            if (!text) return;
+            if(!text) return;
 
-            // Enhanced extraction logic
-            // 1. Amount: Look for numbers with $ or HKD or near keywords like "amount"
-            const amountMatch = text.match(/(?:金額|金额|amount|total|HKD|HK\$|\$)\s?[:：]?\s?(\d{1,7}(?:\.\d{1,2})?)/i) || 
-                               text.match(/(\d{1,7}(?:\.\d{1,2})?)/);
-            
-            // 2. Date: Support YYYY-MM-DD, DD/MM/YYYY, or MM/DD/YYYY
-            const dateMatch = text.match(/(\d{4}[-\/]\d{1,2}[-\/]\d{1,2})/) || 
-                             text.match(/(\d{1,2}[-\/]\d{1,2}[-\/]\d{4})/);
-            
-            // 3. Bill Name: Look for keywords or use first line
-            let name = "";
-            const nameKeywords = ["帳單", "bill", "invoice", "單據", "payment"];
-            const lines = text.split('\n');
-            for (let line of lines) {
-                if (nameKeywords.some(k => line.toLowerCase().includes(k))) {
-                    name = line.replace(/[:：].*/, '').trim();
-                    break;
+            // 1. 金額提取邏輯 (支援 $500, 500元, HKD500 等格式)
+            const amtMatch = text.match(/(?:\$|HKD|RMB|￥|金額|💰)?\s*([0-9:.,]+)/i);
+            if (amtMatch) {
+                let amtStr = amtMatch[1].replace(/,/g, '');
+                if (!isNaN(parseFloat(amtStr))) {
+                    document.getElementById('bill-amount').value = parseFloat(amtStr);
                 }
             }
-            if (!name) name = lines[0].substring(0, 30).trim();
 
-            // 4. Payable To
-            const payableMatch = text.match(/(?:付給|payable to|pay to|抬頭|recipient)[:：]\s?([^\n,，]*)/i);
-            
-            // 5. Account No
-            const accountMatch = text.match(/(?:帳號|帳戶|account|acc)[:：]?\s?([a-z0-9\-\s]{5,20})/i);
-
-            // Apply to form
-            if (amountMatch) document.getElementById('bill-amount').value = amountMatch[1];
+            // 2. 日期提取邏輯 (支援 2024-06-30, 2024/06/30, 30/6, 6月30日 等)
+            const dateMatch = text.match(/(\d{4}[-/.]\d{1,2}[-/.]\d{1,2})|(\d{1,2}[-/.]\d{1,2})/);
             if (dateMatch) {
-                let d = dateMatch[0].replace(/\//g, '-');
-                // If format is DD-MM-YYYY, convert to YYYY-MM-DD
-                if (d.match(/^\d{1,2}-\d{1,2}-\d{4}$/)) {
-                    const parts = d.split('-');
-                    d = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                if (dateMatch[1]) {
+                    document.getElementById('bill-due-date').value = dateMatch[1].replace(/\//g, '-');
+                } else if (dateMatch[2]) {
+                    const currentYear = new Date().getFullYear();
+                    const parts = dateMatch[2].split(/[-/.]/);
+                    document.getElementById('bill-due-date').value = `${currentYear}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
                 }
-                document.getElementById('bill-due-date').value = d;
-            }
-            if (name) document.getElementById('bill-name').value = name;
-            if (payableMatch) document.getElementById('bill-payable').value = payableMatch[1].trim();
-            if (accountMatch) {
-                const remark = document.getElementById('bill-remark');
-                remark.value = (remark.value ? remark.value + "\n" : "") + "Acc: " + accountMatch[1].trim();
             }
 
-            alert(state.lang === 'zh' ? '已嘗試提取資訊，請檢查並完善表單。' : 'Information extracted. Please review and complete the form.');
+            // 3. 抬頭名稱模糊識別
+            const lines = text.split(/[\n,，]/);
+            if (lines.length > 0 && lines[0].length < 30) {
+                document.getElementById('bill-name').value = lines[0].trim();
+            }
         });
 
-        // --- Modals ---
+        // ==========================================
+        // 10. 新增/修改/刪除帳單與範本的整合操作
+        // ==========================================
         const modals = {
             bill: document.getElementById('bill-modal'),
             payment: document.getElementById('payment-modal'),
             template: document.getElementById('template-modal'),
-            export: document.getElementById('export-modal'),
-            category: document.getElementById('category-modal')
+            category: document.getElementById('category-modal'),
+            export: document.getElementById('export-modal')
         };
 
-        function openModal(m) { m.classList.remove('hidden'); }
-        function closeModal(m) { m.classList.add('hidden'); }
-        document.querySelectorAll('.close-modal').forEach(btn => {
-            btn.addEventListener('click', () => Object.values(modals).forEach(closeModal));
-        });
+        function openModal(modalEl) { modalEl.classList.remove('hidden'); }
+        function closeModal() { document.querySelectorAll('.fixed').forEach(m => m.classList.add('hidden')); }
+        document.querySelectorAll('.close-modal').forEach(b => b.addEventListener('click', closeModal));
 
-        // --- Bill Logic ---
         document.getElementById('add-bill-btn').addEventListener('click', () => {
             document.getElementById('bill-form').reset();
             document.getElementById('bill-id').value = '';
-            document.getElementById('smart-paste-input').value = '';
+            document.getElementById('bill-modal-title').innerText = i18n[state.lang].addBill;
             openModal(modals.bill);
         });
 
-        document.getElementById('bill-form').addEventListener('submit', (e) => {
+        // 監聽範本下拉選擇連動
+        document.getElementById('bill-template-select').addEventListener('change', (e) => {
+            const t = state.templates.find(x => x.id === e.target.value);
+            if (!t) return;
+            document.getElementById('bill-name').value = t.name;
+            document.getElementById('bill-category').value = t.category;
+            document.getElementById('bill-payer').value = t.payer || '';
+            document.getElementById('bill-payable').value = t.payable || '';
+            document.getElementById('bill-account').value = t.account || '';
+            document.getElementById('bill-amount-type').value = t.amountType || 'fixed';
+        });
+
+        // 快速應用範本按鈕
+        window.applyTemplateToBill = function(id) {
+            const t = state.templates.find(x => x.id === id);
+            if (!t) return;
+            document.getElementById('bill-form').reset();
+            document.getElementById('bill-id').value = '';
+            document.getElementById('bill-template-select').value = t.id;
+            document.getElementById('bill-name').value = t.name;
+            document.getElementById('bill-category').value = t.category;
+            document.getElementById('bill-payer').value = t.payer || '';
+            document.getElementById('bill-payable').value = t.payable || '';
+            document.getElementById('bill-account').value = t.account || '';
+            document.getElementById('bill-amount-type').value = t.amountType || 'fixed';
+            state.currentTab = 'bills';
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                if(tab.getAttribute('data-tab') === 'bills') tab.click();
+            });
+            openModal(modals.bill);
+        };
+
+        // 帳單儲存動作 (新增/修改)
+        document.getElementById('bill-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const id = document.getElementById('bill-id').value || Date.now().toString();
-            const data = {
-                id,
+            const id = document.getElementById('bill-id').value;
+            const record = {
+                id: id || crypto.randomUUID(),
                 name: document.getElementById('bill-name').value,
                 category: document.getElementById('bill-category').value,
                 amount: parseFloat(document.getElementById('bill-amount').value),
@@ -1558,587 +981,23 @@
                 payable: document.getElementById('bill-payable').value,
                 account: document.getElementById('bill-account').value,
                 remark: document.getElementById('bill-remark').value,
-                status: 'Unpaid'
+                status: id ? (state.bills.find(b => b.id === id)?.status || 'Unpaid') : 'Unpaid'
             };
 
-            const idx = state.bills.findIndex(b => b.id === id);
-            if (idx > -1) {
-                data.status = state.bills[idx].status;
-                data.payment = state.bills[idx].payment;
-                state.bills[idx] = data;
+            if (id) {
+                const idx = state.bills.findIndex(b => b.id === id);
+                state.bills[idx] = record;
+                await saveStateToCloud('bills', 'update', record);
             } else {
-                state.bills.push(data);
+                state.bills.push(record);
+                await saveStateToCloud('bills', 'insert', record);
             }
 
-            saveData();
-            closeModal(modals.bill);
+            closeModal();
+            renderAll();
         });
 
-        // --- Payment Logic ---
-        function markAsPaid(id) {
-            const bill = state.bills.find(b => b.id === id);
-            if (!bill) return;
-            
-            document.getElementById('pay-bill-id').value = id;
-            document.getElementById('pay-summary').innerHTML = `
-                <div class="font-bold">${bill.name}</div>
-                <div>$${bill.amount.toLocaleString()} | ${bill.dueDate}</div>
-            `;
-            document.getElementById('pay-date').value = new Date().toISOString().split('T')[0];
-            updatePayFields('Transfer');
-            openModal(modals.payment);
-        }
-
-        document.getElementById('pay-method').addEventListener('change', (e) => updatePayFields(e.target.value));
-
-        function updatePayFields(method) {
-            const container = document.getElementById('pay-dynamic-fields');
-            container.innerHTML = '';
-            if (method === 'Cheque') {
-                container.innerHTML = `
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Cheque No (支票號碼)</label>
-                        <input type="text" id="pay-cheque-no" required class="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg px-4 py-2 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Bank (銀行)</label>
-                        <input type="text" id="pay-bank" required class="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg px-4 py-2 outline-none">
-                    </div>
-                `;
-            } else if (method === 'Cash') {
-                container.innerHTML = `
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Location (地點)</label>
-                        <input type="text" id="pay-location" required class="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg px-4 py-2 outline-none">
-                    </div>
-                `;
-            }
-        }
-
-        document.getElementById('payment-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const id = document.getElementById('pay-bill-id').value;
-            const bill = state.bills.find(b => b.id === id);
-            if (!bill) return;
-
-            const method = document.getElementById('pay-method').value;
-            bill.status = 'Paid';
-            bill.payment = {
-                method,
-                date: document.getElementById('pay-date').value,
-                chequeNo: document.getElementById('pay-cheque-no')?.value || '',
-                bank: document.getElementById('pay-bank')?.value || '',
-                location: document.getElementById('pay-location')?.value || ''
-            };
-
-            // Recurring Logic: If it's a monthly/recurring bill, check if next one already exists
-            if (bill.frequency !== 'One-time') {
-                const nextDate = new Date(bill.dueDate);
-                if (bill.frequency === 'Monthly') nextDate.setMonth(nextDate.getMonth() + 1);
-                else if (bill.frequency === 'Quarterly') nextDate.setMonth(nextDate.getMonth() + 3);
-                else if (bill.frequency === 'Semi-Annual') nextDate.setMonth(nextDate.getMonth() + 6);
-                else if (bill.frequency === 'Annual') nextDate.setFullYear(nextDate.getFullYear() + 1);
-
-                const nextDueDate = nextDate.toISOString().split('T')[0];
-                
-                // Only create if a bill with same name and next due date doesn't exist
-                const exists = state.bills.some(b => b.name === bill.name && b.dueDate === nextDueDate);
-                
-                if (!exists) {
-                    const nextBill = {
-                        ...bill,
-                        id: Date.now().toString() + "_next",
-                        dueDate: nextDueDate,
-                        amount: bill.amountType === 'variable' ? 0 : bill.amount,
-                        status: 'Unpaid',
-                        payment: null
-                    };
-                    state.bills.push(nextBill);
-                }
-            }
-
-            saveData();
-            closeModal(modals.payment);
-        });
-
-        // --- Rendering ---
-        function renderDashboard() {
-            const now = new Date();
-            now.setHours(0,0,0,0);
-            const next30 = new Date(now); next30.setDate(now.getDate() + 30);
-
-            const unpaid = state.bills.filter(b => b.status === 'Unpaid');
-            const totalUnpaid = unpaid.reduce((s, b) => s + b.amount, 0);
-            const overdueBills = unpaid.filter(b => new Date(b.dueDate) < now);
-            const due30Bills = unpaid.filter(b => {
-                const d = new Date(b.dueDate);
-                return d >= now && d <= next30;
-            });
-
-            const paidThisMonth = state.bills.filter(b => {
-                if (b.status !== 'Paid' || !b.payment) return false;
-                const d = new Date(b.payment.date);
-                return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-            }).reduce((s, b) => s + b.amount, 0);
-
-            document.getElementById('stat-total-unpaid').innerText = `$${totalUnpaid.toLocaleString()}`;
-            document.getElementById('stat-due-30').innerText = due30Bills.length;
-            document.getElementById('stat-overdue').innerText = overdueBills.length;
-            document.getElementById('stat-paid-month').innerText = `$${paidThisMonth.toLocaleString()}`;
-
-            renderDashList('overdue-list', overdueBills);
-            renderDashList('upcoming-30-list', due30Bills);
-        }
-
-        function renderDashList(elId, bills) {
-            const list = document.getElementById(elId);
-            bills.sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate));
-            list.innerHTML = bills.length ? '' : `<div class="p-12 text-center text-gray-400 italic">${i18n[state.lang].noBills}</div>`;
-            
-            bills.forEach(b => {
-                const isOverdue = new Date(b.dueDate) < new Date().setHours(0,0,0,0);
-                list.innerHTML += `
-                    <div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <div class="w-1.5 h-8 rounded-full ${isOverdue ? 'bg-red-500' : 'bg-blue-500'}"></div>
-                            <div>
-                                <div class="font-bold text-gray-900 dark:text-slate-200">${b.name}</div>
-                                <div class="text-[10px] text-gray-500 flex items-center gap-1">
-                                    <i data-lucide="calendar" class="w-3 h-3"></i> ${b.dueDate}
-                                    <span class="mx-1">•</span>
-                                    <span class="px-1 rounded bg-gray-100 dark:bg-slate-700 uppercase">${b.category}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <div class="font-bold text-gray-900 dark:text-slate-200">$${b.amount.toLocaleString()}</div>
-                            <button onclick="markAsPaid('${b.id}')" class="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded font-bold uppercase hover:bg-blue-700 transition-colors">${state.lang === 'zh' ? '付款' : 'Pay'}</button>
-                        </div>
-                    </div>
-                `;
-            });
-            lucide.createIcons();
-        }
-
-        function renderBillsTable() {
-            const tbody = document.getElementById('bills-table-body');
-            const search = document.getElementById('search-bills').value.toLowerCase();
-            const year = document.getElementById('filter-year').value;
-            const month = document.getElementById('filter-month').value;
-            const cat = document.getElementById('filter-category').value;
-
-            const statusFilter = document.getElementById('filter-status').value;
-            let filtered = state.bills.filter(b => {
-                const date = new Date(b.dueDate);
-                const mSearch = b.name.toLowerCase().includes(search) || (b.remark && b.remark.toLowerCase().includes(search));
-                const mYear = year === 'all' || date.getFullYear().toString() === year;
-                const mMonth = month === 'all' || (date.getMonth() + 1).toString() === month;
-                const mCat = cat === 'all' || b.category === cat;
-                
-                let mStatus = statusFilter === 'all' || b.status === statusFilter;
-                if (statusFilter === 'Overdue') {
-                    const now = new Date(); now.setHours(0,0,0,0);
-                    mStatus = b.status === 'Unpaid' && new Date(b.dueDate) < now;
-                }
-
-                return mSearch && mYear && mMonth && mCat && mStatus;
-            });
-
-            // Sorting
-            filtered.sort((a, b) => {
-                let valA, valB;
-                if (state.sort.field === 'amount') { valA = a.amount; valB = b.amount; }
-                else if (state.sort.field === 'dueDate') { valA = new Date(a.dueDate).getTime(); valB = new Date(b.dueDate).getTime(); }
-                else if (state.sort.field === 'status') { 
-                    const order = { 'Overdue': 0, 'Unpaid': 1, 'Paid': 2 };
-                    const getStatus = (bill) => {
-                        if (bill.status === 'Paid') return 'Paid';
-                        if (new Date(bill.dueDate) < new Date().setHours(0,0,0,0)) return 'Overdue';
-                        return 'Unpaid';
-                    };
-                    valA = order[getStatus(a)];
-                    valB = order[getStatus(b)];
-                }
-                
-                if (state.sort.order === 'asc') return valA > valB ? 1 : -1;
-                else return valA < valB ? 1 : -1;
-            });
-
-            tbody.innerHTML = filtered.length ? '' : `<tr><td colspan="5" class="p-12 text-center text-gray-400 italic">${i18n[state.lang].noBills}</td></tr>`;
-
-            filtered.forEach(b => {
-                const isOverdue = new Date(b.dueDate) < new Date().setHours(0,0,0,0) && b.status === 'Unpaid';
-                const statusLabel = b.status === 'Paid' ? i18n[state.lang].paid : (isOverdue ? i18n[state.lang].overdue : i18n[state.lang].unpaid);
-                const statusClass = b.status === 'Paid' ? 'bg-green-100 text-green-700' : (isOverdue ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700');
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors cursor-pointer" onclick="toggleBillDetail('${b.id}')">
-                        <td class="px-6 py-4">
-                            <div class="font-bold text-gray-900 dark:text-slate-200 flex items-center gap-2">
-                                <i data-lucide="chevron-right" class="w-3 h-3 transition-transform" id="icon-${b.id}"></i>
-                                ${b.name}
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 font-bold">$${b.amount.toLocaleString()}</td>
-                        <td class="px-6 py-4">
-                            <div class="${isOverdue ? 'text-red-600 font-bold' : ''}">${b.dueDate}</div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusClass}">${statusLabel}</span>
-                        </td>
-                        <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
-                            <div class="flex justify-end gap-1">
-                                ${b.status === 'Unpaid' ? `<button onclick="markAsPaid('${b.id}')" class="p-1.5 hover:bg-green-50 text-green-600 rounded"><i data-lucide="check-square" class="w-4 h-4"></i></button>` : `<button onclick="recallPayment('${b.id}')" class="p-1.5 hover:bg-orange-50 text-orange-600 rounded" title="${i18n[state.lang].recallPayment}"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>`}
-                                <button onclick="editBill('${b.id}')" class="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                                <button onclick="deleteBill('${b.id}')" class="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr id="detail-${b.id}" class="hidden bg-gray-50/50 dark:bg-slate-800/30">
-                        <td colspan="5" class="px-12 py-6">
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
-                                <div><p class="text-gray-500 font-medium" data-t="category">類別</p><p>${b.category}</p></div>
-                                <div><p class="text-gray-500 font-medium" data-t="payer">付款人</p><p>${b.payer || '-'}</p></div>
-                                <div><p class="text-gray-500 font-medium" data-t="payableTo">抬頭</p><p>${b.payable || '-'}</p></div>
-                                <div><p class="text-gray-500 font-medium" data-t="accountNo">付款帳號</p><p>${b.account || '-'}</p></div>
-                                <div><p class="text-gray-500 font-medium" data-t="frequency">週期</p><p>${i18n[state.lang][b.frequency.toLowerCase()] || b.frequency}</p></div>
-                                <div class="col-span-2"><p class="text-gray-500 font-medium" data-t="remark">備註</p><p>${b.remark || '-'}</p></div>
-                                ${b.payment ? `
-                                <div class="col-span-2 bg-green-50 dark:bg-green-900/10 p-3 rounded-lg border border-green-100 dark:border-green-900/20">
-                                    <p class="font-bold text-green-700 mb-1" data-t="confirmPayment">付款詳情</p>
-                                    <p>${b.payment.date} | ${b.payment.method} ${b.payment.chequeNo ? `(#${b.payment.chequeNo} @ ${b.payment.bank})` : ''}</p>
-                                </div>` : ''}
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-            lucide.createIcons();
-        }
-
-        window.toggleBillDetail = (id) => {
-            const row = document.getElementById(`detail-${id}`);
-            const icon = document.getElementById(`icon-${id}`);
-            row.classList.toggle('hidden');
-            icon.style.transform = row.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
-        };
-
-        ['sort-amount', 'sort-date', 'sort-status'].forEach(id => {
-            document.getElementById(id).addEventListener('click', () => {
-                const field = id.replace('sort-', '');
-                if (state.sort.field === field) state.sort.order = state.sort.order === 'asc' ? 'desc' : 'asc';
-                else { state.sort.field = field; state.sort.order = 'asc'; }
-                renderBillsTable();
-            });
-        });
-
-        function renderHistory() {
-            const container = document.getElementById('history-content');
-            const year = document.getElementById('history-year').value;
-            const month = document.getElementById('history-month').value;
-            const search = document.getElementById('search-history').value.toLowerCase();
-            const paidBills = state.bills.filter(b => b.status === 'Paid' && b.payment);
-            
-            const groups = {};
-            paidBills.forEach(b => {
-                const d = new Date(b.payment.date);
-                const mYear = year === 'all' || d.getFullYear().toString() === year;
-                const mMonth = month === 'all' || (d.getMonth() + 1).toString() === month;
-                
-                const searchMatch = !search || 
-                    b.name.toLowerCase().includes(search) || 
-                    (b.payment.chequeNo && b.payment.chequeNo.toLowerCase().includes(search)) ||
-                    (b.account && b.account.toLowerCase().includes(search)) ||
-                    (b.payable && b.payable.toLowerCase().includes(search)) ||
-                    b.amount.toString().includes(search);
-
-                if (!mYear || !mMonth || !searchMatch) return;
-                
-                const key = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`;
-                if (!groups[key]) groups[key] = [];
-                groups[key].push(b);
-            });
-
-            const sortedKeys = Object.keys(groups).sort().reverse();
-            container.innerHTML = sortedKeys.length ? '' : `<div class="text-center py-12 text-gray-400 italic">${i18n[state.lang].noBills}</div>`;
-
-            sortedKeys.forEach(key => {
-                const bills = groups[key];
-                const total = bills.reduce((s, b) => s + b.amount, 0);
-                container.innerHTML += `
-                    <div class="border border-gray-100 dark:border-slate-800 rounded-xl overflow-hidden mb-6">
-                        <div class="bg-gray-50 dark:bg-slate-800 px-4 py-3 flex justify-between items-center">
-                            <span class="font-bold">${key}</span>
-                            <span class="text-sm font-bold text-green-600">Total: $${total.toLocaleString()}</span>
-                        </div>
-                        <div class="divide-y divide-gray-50 dark:divide-slate-800">
-                            ${bills.map(b => `
-                                <div class="px-4 py-3 flex justify-between items-center text-sm group cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800/50" onclick="toggleBillDetail('${b.id}')">
-                                    <div class="flex items-center gap-3">
-                                        <i data-lucide="chevron-right" class="w-3 h-3 transition-transform" id="icon-${b.id}"></i>
-                                        <div>
-                                            <div class="font-medium">${b.name}</div>
-                                            <div class="text-[10px] text-gray-500">Paid: ${b.payment.date} | ${b.payment.method}</div>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-4">
-                                        <div class="font-bold">$${b.amount.toLocaleString()}</div>
-                                        <button onclick="event.stopPropagation(); recallPayment('${b.id}')" class="p-1.5 opacity-0 group-hover:opacity-100 hover:bg-orange-50 text-orange-600 rounded transition-all" title="${i18n[state.lang].recallPayment}">
-                                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div id="detail-${b.id}" class="hidden bg-gray-50/50 dark:bg-slate-800/30">
-                                    <div class="px-10 py-4 text-xs grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        <div><p class="text-gray-400" data-t="category">類別</p><p>${b.category}</p></div>
-                                        <div><p class="text-gray-400" data-t="payableTo">抬頭</p><p>${b.payable || '-'}</p></div>
-                                        <div><p class="text-gray-400" data-t="accountNo">付款帳號</p><p>${b.account || '-'}</p></div>
-                                        <div><p class="text-gray-400" data-t="confirmPayment">詳情</p><p>${b.payment.method} ${b.payment.chequeNo ? `(#${b.payment.chequeNo} @ ${b.payment.bank})` : ''}</p></div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            });
-            lucide.createIcons();
-        }
-
-        function updateFilterOptions() {
-            const years = [...new Set(state.bills.map(b => new Date(b.dueDate).getFullYear()))].sort().reverse();
-            const ySelect = document.getElementById('filter-year');
-            const hySelect = document.getElementById('history-year');
-            
-            const currentY = ySelect.value;
-            ySelect.innerHTML = `<option value="all">${i18n[state.lang].allYears}</option>`;
-            hySelect.innerHTML = `<option value="all">${i18n[state.lang].allYears}</option>`;
-            
-            years.forEach(y => {
-                const opt = `<option value="${y}" ${y.toString() === currentY ? 'selected' : ''}>${y}</option>`;
-                ySelect.innerHTML += opt;
-                hySelect.innerHTML += opt;
-            });
-
-            const cats = [...new Set(state.bills.map(b => b.category))];
-            const cSelect = document.getElementById('filter-category');
-            const currentC = cSelect.value;
-            cSelect.innerHTML = `<option value="all">${i18n[state.lang].allCategories}</option>`;
-            cats.forEach(c => {
-                cSelect.innerHTML += `<option value="${c}" ${c === currentC ? 'selected' : ''}>${c}</option>`;
-            });
-        }
-
-        // --- Templates ---
-        function renderTemplates() {
-            const grid = document.getElementById('templates-grid');
-            const select = document.getElementById('bill-template-select');
-            grid.innerHTML = state.templates.length ? '' : `<div class="col-span-full p-12 text-center text-gray-400 border-2 border-dashed border-gray-200 dark:border-slate-800 rounded-xl">No templates yet.</div>`;
-            select.innerHTML = `<option value="">${state.lang === 'zh' ? '選擇範本...' : 'Select template...'}</option>`;
-
-            state.templates.forEach(t => {
-                grid.innerHTML += `
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h5 class="font-bold text-gray-900 dark:text-slate-200">${t.name}</h5>
-                                <span class="text-[10px] bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-400 px-2 py-0.5 rounded uppercase">${t.category}</span>
-                            </div>
-                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button onclick="editTemplate('${t.id}')" class="p-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-blue-600 rounded"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                                <button onclick="deleteTemplate('${t.id}')" class="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 rounded"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-500 space-y-1">
-                            <p><span class="font-medium">Payer:</span> ${t.payer || '-'}</p>
-                            <p><span class="font-medium">Payable:</span> ${t.payable || '-'}</p>
-                            <p><span class="font-medium">Acc No:</span> ${t.account || '-'}</p>
-                        </div>
-                    </div>
-                `;
-                select.innerHTML += `<option value="${t.id}">${t.name}</option>`;
-            });
-            lucide.createIcons();
-        }
-
-        document.getElementById('bill-template-select').addEventListener('change', (e) => {
-            const tpl = state.templates.find(t => t.id === e.target.value);
-            if (tpl) {
-                document.getElementById('bill-name').value = tpl.name;
-                document.getElementById('bill-category').value = tpl.category;
-                document.getElementById('bill-payer').value = tpl.payer;
-                document.getElementById('bill-payable').value = tpl.payable;
-                document.getElementById('bill-account').value = tpl.account || '';
-                document.getElementById('bill-amount-type').value = tpl.amountType || 'fixed';
-                if (tpl.address) document.getElementById('bill-remark').value = tpl.address;
-            }
-        });
-
-        // Category Management
-        document.getElementById('manage-cats-btn').addEventListener('click', () => {
-            renderCatList();
-            openModal(modals.category);
-        });
-
-        document.getElementById('add-cat-btn').addEventListener('click', () => {
-            const input = document.getElementById('new-cat-input');
-            const val = input.value.trim();
-            if (val && !state.categories.includes(val)) {
-                state.categories.push(val);
-                input.value = '';
-                saveData();
-                renderCatList();
-                updateFilterOptions();
-            }
-        });
-
-        window.deleteCategory = (cat) => {
-            if (confirm(`Delete category "${cat}"?`)) {
-                state.categories = state.categories.filter(c => c !== cat);
-                saveData();
-                renderCatList();
-                updateFilterOptions();
-            }
-        };
-
-        function renderCatList() {
-            const list = document.getElementById('cat-list');
-            list.innerHTML = state.categories.map(c => `
-                <div class="flex justify-between items-center p-2 bg-gray-50 dark:bg-slate-800 rounded">
-                    <span>${c}</span>
-                    <button onclick="deleteCategory('${c}')" class="text-red-500 hover:text-red-700"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                </div>
-            `).join('');
-            lucide.createIcons();
-        }
-
-        function updateFilterOptions() {
-            const years = [...new Set(state.bills.map(b => new Date(b.dueDate).getFullYear()))].sort().reverse();
-            const ySelect = document.getElementById('filter-year');
-            const hySelect = document.getElementById('history-year');
-            
-            const currentY = ySelect.value;
-            ySelect.innerHTML = `<option value="all">${i18n[state.lang].allYears}</option>`;
-            hySelect.innerHTML = `<option value="all">${i18n[state.lang].allYears}</option>`;
-            
-            years.forEach(y => {
-                const opt = `<option value="${y}" ${y.toString() === currentY ? 'selected' : ''}>${y}</option>`;
-                ySelect.innerHTML += opt;
-                hySelect.innerHTML += opt;
-            });
-
-            // Update all category selects
-            const catSelects = ['filter-category', 'bill-category', 'tpl-category'];
-            catSelects.forEach(id => {
-                const el = document.getElementById(id);
-                if (!el) return;
-                const current = el.value;
-                el.innerHTML = id === 'filter-category' ? `<option value="all">${i18n[state.lang].allCategories}</option>` : '';
-                state.categories.forEach(c => {
-                    el.innerHTML += `<option value="${c}" ${c === current ? 'selected' : ''}>${c}</option>`;
-                });
-            });
-        }
-
-        // --- Event Listeners ---
-        document.getElementById('toggle-lang').addEventListener('click', () => {
-            state.lang = state.lang === 'zh' ? 'en' : 'zh';
-            saveData();
-            updateUI();
-        });
-
-        document.getElementById('toggle-dark').addEventListener('click', () => {
-            state.dark = !state.dark;
-            saveData();
-            updateUI();
-        });
-
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('tab-active'));
-                tab.classList.add('tab-active');
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-                document.getElementById(`tab-${tab.dataset.tab}`).classList.remove('hidden');
-                state.currentTab = tab.dataset.tab;
-                renderAll();
-            });
-        });
-
-        document.getElementById('export-btn').addEventListener('click', () => openModal(modals.export));
-        document.getElementById('export-all').addEventListener('click', () => exportData('all'));
-        document.getElementById('export-unpaid').addEventListener('click', () => exportData('unpaid'));
-        document.getElementById('export-monthly').addEventListener('click', () => exportData('monthly'));
-        document.getElementById('export-upcoming-2').addEventListener('click', () => exportData('upcoming_2_months'));
-
-        function exportData(type) {
-            let data = [...state.bills];
-            const now = new Date();
-            
-            if (type === 'unpaid') {
-                data = data.filter(b => b.status === 'Unpaid');
-            } else if (type === 'monthly') {
-                data = data.filter(b => {
-                    const d = new Date(b.dueDate);
-                    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-                });
-            } else if (type === 'upcoming_2_months') {
-                const next2Months = new Date(now);
-                next2Months.setMonth(now.getMonth() + 2);
-                data = data.filter(b => {
-                    const d = new Date(b.dueDate);
-                    return b.status === 'Unpaid' && d >= now && d <= next2Months;
-                });
-            }
-
-            if (data.length === 0) {
-                alert(state.lang === 'zh' ? '沒有可匯出的資料' : 'No data to export');
-                return;
-            }
-
-            // Sort by due date
-            data.sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate));
-
-            const headers = ['Bill Name', 'Category', 'Amount', 'Due Date', 'Status', 'Frequency', 'Payer', 'Payable To', 'Payment Method', 'Payment Date', 'Cheque No', 'Bank', 'Remark'];
-            const rows = data.map(b => [
-                `"${b.name}"`, 
-                `"${b.category}"`, 
-                b.amount, 
-                b.dueDate, 
-                `"${b.status}"`, 
-                `"${b.frequency}"`, 
-                `"${b.payer || ''}"`, 
-                `"${b.payable || ''}"`,
-                `"${b.payment?.method || ''}"`, 
-                `"${b.payment?.date || ''}"`, 
-                `"${b.payment?.chequeNo || ''}"`, 
-                `"${b.payment?.bank || ''}"`,
-                `"${(b.remark || '').replace(/"/g, '""')}"`
-            ]);
-
-            let csvContent = "\uFEFF" + headers.join(",") + "\n" + rows.map(r => r.join(",")).join("\n");
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.setAttribute("href", url);
-            link.setAttribute("download", `Company_Bills_${type}_${now.toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            closeModal(modals.export);
-        }
-
-        // Helpers for CRUD (Delete/Edit)
-        window.deleteBill = (id) => { if(confirm('Confirm delete?')) { state.bills = state.bills.filter(b => b.id !== id); saveData(); } };
-        window.recallPayment = (id) => {
-            if (confirm(i18n[state.lang].confirmRecall)) {
-                const b = state.bills.find(x => x.id === id);
-                if (b) {
-                    b.status = 'Unpaid';
-                    delete b.payment;
-                    saveData();
-                }
-            }
-        };
-        window.editBill = (id) => {
+        window.editBill = function(id) {
             const b = state.bills.find(x => x.id === id);
             if(!b) return;
             document.getElementById('bill-id').value = b.id;
@@ -2147,73 +1006,277 @@
             document.getElementById('bill-amount').value = b.amount;
             document.getElementById('bill-amount-type').value = b.amountType || 'fixed';
             document.getElementById('bill-due-date').value = b.dueDate;
-            document.getElementById('bill-payer').value = b.payer;
-            document.getElementById('bill-frequency').value = b.frequency;
-            document.getElementById('bill-payable').value = b.payable;
+            document.getElementById('bill-payer').value = b.payer || '';
+            document.getElementById('bill-frequency').value = b.frequency || 'One-time';
+            document.getElementById('bill-payable').value = b.payable || '';
             document.getElementById('bill-account').value = b.account || '';
-            document.getElementById('bill-remark').value = b.remark;
+            document.getElementById('bill-remark').value = b.remark || '';
+            document.getElementById('bill-modal-title').innerText = "編輯帳單";
             openModal(modals.bill);
         };
 
-        // Template CRUD
+        window.deleteBill = async function(id) {
+            if(confirm("確定要刪除此帳單嗎？此動作無法復原。")) {
+                const idx = state.bills.findIndex(b => b.id === id);
+                if(idx > -1) {
+                    const deletedRecord = state.bills[idx];
+                    state.bills.splice(idx, 1);
+                    await saveStateToCloud('bills', 'delete', { id: deletedRecord.id });
+                    renderAll();
+                }
+            }
+        };
+
+        // 記為已付對話框
+        window.openPaymentModal = function(id) {
+            const b = state.bills.find(x => x.id === id);
+            if(!b) return;
+            document.getElementById('pay-bill-id').value = b.id;
+            document.getElementById('pay-summary').innerHTML = `<strong>${b.name}</strong><br>金額: $${parseFloat(b.amount).toFixed(2)} | 到期日: ${b.dueDate}`;
+            document.getElementById('pay-date').value = new Date().toISOString().split('T')[0];
+            updatePaymentDynamicFields();
+            openModal(modals.payment);
+        };
+
+        // 依據付款方式切換動態顯示欄位 (支票號碼或銀行流水號)
+        const payMethodSelect = document.getElementById('pay-method');
+        payMethodSelect.addEventListener('change', updatePaymentDynamicFields);
+
+        function updatePaymentDynamicFields() {
+            const val = payMethodSelect.value;
+            const container = document.getElementById('pay-dynamic-fields');
+            container.innerHTML = '';
+            if (val === 'Cheque') {
+                container.innerHTML = `<div><label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">支票號碼 (Cheque No.)</label><input type="text" id="pay-cheque-no" required class="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg px-4 py-2 outline-none"></div>`;
+            } else if (val === 'Transfer') {
+                container.innerHTML = `<div><label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">銀行轉帳參考號碼 (Bank Ref No.)</label><input type="text" id="pay-bank-ref" class="w-full border border-gray-300 dark:border-slate-700 dark:bg-slate-800 rounded-lg px-4 py-2 outline-none"></div>`;
+            }
+        }
+
+        // 提交付款歷史
+        document.getElementById('payment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('pay-bill-id').value;
+            const b = state.bills.find(x => x.id === id);
+            if(!b) return;
+
+            b.status = 'Paid';
+            b.paymentMethod = document.getElementById('pay-method').value;
+            b.paymentDate = document.getElementById('pay-date').value;
+            b.chequeNo = document.getElementById('pay-cheque-no')?.value || null;
+            b.bankRef = document.getElementById('pay-bank-ref')?.value || null;
+
+            await saveStateToCloud('bills', 'update', b);
+            closeModal();
+            renderAll();
+        });
+
+        // ==========================================
+        // 11. 範本新增與修改操作
+        // ==========================================
         document.getElementById('add-template-btn').addEventListener('click', () => {
             document.getElementById('template-form').reset();
             document.getElementById('template-id').value = '';
+            document.getElementById('template-modal-title').innerText = i18n[state.lang].createTemplate;
+            
+            const tCat = document.getElementById('tpl-category');
+            tCat.innerHTML = '';
+            state.categories.forEach(c => tCat.innerHTML += `<option value="${c}">${c}</option>`);
+            
             openModal(modals.template);
         });
 
-        document.getElementById('template-form').addEventListener('submit', (e) => {
+        document.getElementById('template-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const id = document.getElementById('template-id').value || Date.now().toString();
-            const data = {
-                id,
+            const id = document.getElementById('template-id').value;
+            const record = {
+                id: id || crypto.randomUUID(),
                 name: document.getElementById('tpl-name').value,
                 category: document.getElementById('tpl-category').value,
+                amountType: document.getElementById('tpl-amount-type').value,
                 payer: document.getElementById('tpl-payer').value,
                 payable: document.getElementById('tpl-payable').value,
                 account: document.getElementById('tpl-account').value,
-                address: document.getElementById('tpl-address').value,
-                amountType: document.getElementById('tpl-amount-type').value
+                address: document.getElementById('tpl-address').value
             };
-            const idx = state.templates.findIndex(t => t.id === id);
-            if (idx > -1) state.templates[idx] = data;
-            else state.templates.push(data);
-            saveData();
-            closeModal(modals.template);
+
+            if (id) {
+                const idx = state.templates.findIndex(t => t.id === id);
+                state.templates[idx] = record;
+                await saveStateToCloud('templates', 'update', record);
+            } else {
+                state.templates.push(record);
+                await saveStateToCloud('templates', 'insert', record);
+            }
+            closeModal();
+            renderTemplates();
         });
 
-        window.deleteTemplate = (id) => { if(confirm('Delete template?')) { state.templates = state.templates.filter(t => t.id !== id); saveData(); } };
-        window.editTemplate = (id) => {
+        window.editTemplate = function(id) {
             const t = state.templates.find(x => x.id === id);
             if(!t) return;
             document.getElementById('template-id').value = t.id;
             document.getElementById('tpl-name').value = t.name;
-            document.getElementById('tpl-category').value = t.category;
-            document.getElementById('tpl-payer').value = t.payer;
-            document.getElementById('tpl-payable').value = t.payable;
-            document.getElementById('tpl-account').value = t.account;
-            document.getElementById('tpl-address').value = t.address;
+            
+            const tCat = document.getElementById('tpl-category');
+            tCat.innerHTML = '';
+            state.categories.forEach(c => tCat.innerHTML += `<option value="${c}">${c}</option>`);
+            tCat.value = t.category;
+
+            document.getElementById('tpl-payer').value = t.payer || '';
+            document.getElementById('tpl-payable').value = t.payable || '';
+            document.getElementById('tpl-account').value = t.account || '';
+            document.getElementById('tpl-address').value = t.address || '';
             document.getElementById('tpl-amount-type').value = t.amountType || 'fixed';
+            document.getElementById('template-modal-title').innerText = "編輯範本設定";
             openModal(modals.template);
         };
 
-        function renderAll() {
-            renderDashboard();
-            renderBillsTable();
-            renderTemplates();
-            renderHistory();
-            updateFilterOptions();
+        window.deleteTemplate = async function(id) {
+            if(confirm("確定要刪除此範本嗎？")) {
+                const idx = state.templates.findIndex(t => t.id === id);
+                if(idx > -1) {
+                    const deletedTpl = state.templates[idx];
+                    state.templates.splice(idx, 1);
+                    await saveStateToCloud('templates', 'delete', { id: deletedTpl.id });
+                    renderTemplates();
+                }
+            }
+        };
+
+        // ==========================================
+        // 12. 類別管理操作邏輯
+        // ==========================================
+        document.getElementById('manage-cats-btn').addEventListener('click', () => {
+            renderCategoryList();
+            openModal(modals.category);
+        });
+
+        function renderCategoryList() {
+            const list = document.getElementById('cat-list');
+            list.innerHTML = '';
+            state.categories.forEach(c => {
+                list.innerHTML += `
+                    <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-800 rounded-lg text-sm">
+                        <span>${c}</span>
+                        <button onclick="deleteCategory('${c}')" class="text-red-500 hover:text-red-700"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
         }
 
-        // Filter triggers
-        ['filter-year', 'filter-month', 'filter-category', 'filter-status', 'search-bills'].forEach(id => {
-            document.getElementById(id).addEventListener('input', renderBillsTable);
+        document.getElementById('add-cat-btn').addEventListener('click', async () => {
+            const val = document.getElementById('new-cat-input').value.trim();
+            if(val && !state.categories.includes(val)) {
+                state.categories.push(val);
+                document.getElementById('new-cat-input').value = '';
+                await saveStateToCloud('categories', 'insert', { id: crypto.randomUUID(), name: val });
+                renderCategoryList();
+                updateFilterOptions();
+            }
         });
-        document.getElementById('history-year').addEventListener('change', renderHistory);
-        document.getElementById('history-month').addEventListener('change', renderHistory);
+
+        window.deleteCategory = async function(catName) {
+            if(confirm(`確認要刪除類別「${catName}」嗎？`)) {
+                const idx = state.categories.indexOf(catName);
+                if(idx > -1) {
+                    state.categories.splice(idx, 1);
+                    await saveStateToCloud('categories', 'delete', { id: catName }); // 如果需要對應名稱刪除
+                    renderCategoryList();
+                    updateFilterOptions();
+                }
+            }
+        };
+
+        // ==========================================
+        // 13. CSV 資料匯出引擎
+        // ==========================================
+        document.getElementById('export-btn').addEventListener('click', () => openModal(modals.export));
+        document.getElementById('export-all').addEventListener('click', () => downloadCSV(state.bills));
+        document.getElementById('export-filtered').addEventListener('click', () => {
+            // 與表格篩選保持相同的一致邏輯
+            const yFilter = document.getElementById('filter-year').value;
+            const mFilter = document.getElementById('filter-month').value;
+            const cFilter = document.getElementById('filter-category').value;
+            const sFilter = document.getElementById('filter-status').value;
+            const search = document.getElementById('search-bills').value.toLowerCase();
+
+            let targetBills = state.bills.filter(bill => {
+                const d = new Date(bill.dueDate);
+                if (yFilter !== 'all' && d.getFullYear().toString() !== yFilter) return false;
+                if (mFilter !== 'all' && (d.getMonth() + 1).toString() !== mFilter) return false;
+                if (cFilter !== 'all' && bill.category !== cFilter) return false;
+                if (sFilter !== 'all') {
+                    if (sFilter === 'Overdue') return bill.status === 'Unpaid' && new Date(bill.dueDate) < new Date();
+                    if (bill.status !== sFilter) return false;
+                }
+                if (search && !bill.name.toLowerCase().includes(search)) return false;
+                return true;
+            });
+            downloadCSV(targetBills);
+        });
+
+        function downloadCSV(billsList) {
+            let csv = '\uFEFF帳單名稱,類別,金額,金額類型,到期日,狀態,付款人,支付週期,支票抬頭,付款帳號,付款日期,付款方式,備註\n';
+            billsList.forEach(b => {
+                csv += `"${b.name}","${b.category}",${b.amount},"${b.amountType || 'fixed'}","${b.dueDate}","${b.status}","${b.payer || ''}","${b.frequency || ''}","${b.payable || ''}","${b.account || ''}","${b.paymentDate || ''}","${b.paymentMethod || ''}","${b.remark || ''}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", `帳單匯出報告_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            closeModal();
+        }
+
+        // ==========================================
+        // 14. 系統初始化控制
+        // ==========================================
+        // 排序按鈕觸發事件
+        document.getElementById('sort-amount').addEventListener('click', () => {
+            state.sortOrder = (state.sortField === 'amount' && state.sortOrder === 'asc') ? 'desc' : 'asc';
+            state.sortField = 'amount';
+            renderBillsTable();
+        });
+        document.getElementById('sort-date').addEventListener('click', () => {
+            state.sortOrder = (state.sortField === 'date' && state.sortOrder === 'asc') ? 'desc' : 'asc';
+            state.sortField = 'date';
+            renderBillsTable();
+        });
+        document.getElementById('sort-status').addEventListener('click', () => {
+            state.sortOrder = (state.sortField === 'status' && state.sortOrder === 'asc') ? 'desc' : 'asc';
+            state.sortField = 'status';
+            renderBillsTable();
+        });
+
+        // 語系與暗黑模式切換監聽
+        document.getElementById('toggle-lang').addEventListener('click', () => {
+            state.lang = state.lang === 'zh' ? 'en' : 'zh';
+            updateUI();
+            renderAll();
+        });
+        document.getElementById('toggle-dark').addEventListener('click', () => {
+            state.dark = !state.dark;
+            updateUI();
+        });
+
+        // 即時輸入篩選觸發
+        ['filter-year', 'filter-month', 'filter-category', 'filter-status', 'search-bills'].forEach(id => {
+            document.getElementById(id).addEventListener('change', renderBillsTable);
+            if(id === 'search-bills') document.getElementById(id).addEventListener('input', renderBillsTable);
+        });
         document.getElementById('search-history').addEventListener('input', renderHistory);
 
-        window.onload = updateUI;
+        // 網頁開啟載入流程
+        window.onload = async () => {
+            updateUI();
+            // 先從本地快取或雲端非同步載入最新資料
+            await loadDataFromCloud();
+            renderAll();
+        };
     </script>
 </body>
 </html>
