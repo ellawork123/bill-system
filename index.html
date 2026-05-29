@@ -917,6 +917,39 @@ async function fetchBillsFromSupabase() {
 
         // Initialize
         updateUI();
+
+        // ==========================================
+        // 🚀 SUPABASE 登入與雲端數據自動載入同步邏輯
+        // ==========================================
+        
+        // 1. 攔截登入表單
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('login-password').value;
+            if (password === state.password) {
+                state.isLoggedIn = true;
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                updateUI();
+                await fetchBillsFromSupabase(); // 👈 登入成功即刻去雲端撈 Data
+            } else {
+                alert('Incorrect password!');
+                document.getElementById('login-password').value = '';
+            }
+        });
+
+        // 2. 強制網頁一開就執行初始化與加載
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!state.isLoggedIn) {
+                document.getElementById('login-modal').classList.remove('hidden');
+                document.getElementById('app').classList.add('hidden');
+            } else {
+                updateUI();
+                await fetchBillsFromSupabase(); // 👈 已登入狀態下直接與雲端同步
+            }
+        }); 
+
+        
     </script>
 </body>
 </html>
