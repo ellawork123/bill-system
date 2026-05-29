@@ -2,51 +2,17 @@
 <html lang="en" class="light">
 <head>
 
+ <head>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+   <script>
+  const SUPABASE_URL = 'https://kyebgygdcnrabcuuncac.supabase.co';
+ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5ZWJneWdkY25yYWJjdXVuY2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NDM3OTMsImV4cCI6MjA5NTUxOTc5M30.MLG0Eh4gq-boJ4GXyAtacJsSBE1K8NmyVzvZKl9f_vY";
+';
+ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>公司帳單管理系統 | Company Bill Management</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
-        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; transition: background-color 0.3s, color 0.3s; }
-        .dark { background-color: #0f172a; color: #f8fafc; }
-        .dark .bg-white { background-color: #1e293b; color: #f8fafc; }
-        .dark .bg-gray-50 { background-color: #0f172a; }
-        .dark .border-gray-100, .dark .border-gray-200 { border-color: #334155; }
-        .dark .text-gray-500 { color: #94a3b8; }
-        .dark .text-gray-900 { color: #f8fafc; }
-        .dark .hover\:bg-gray-50:hover { background-color: #334155; }
-        .tab-active { border-bottom: 2px solid #3b82f6; color: #3b82f6; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        [v-cloak] { display: none; }
-    </style>
-    <script>
-            <script>
-        // ==========================================
-        // 1. 填入你的 Supabase 金鑰設定
-        // ==========================================
-        const SUPABASE_URL = "https://kyebgygdcnrabcuuncac.supabase.co"; 
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5ZWJneWdkY25yYWJjdXVuY2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NDM3OTMsImV4cCI6MjA5NTUxOTc5M30.MLG0Eh4gq-boJ4GXyAtacJsSBE1K8NmyVzvZKl9f_vY";
-
-  
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#0f172a',
-                        darkCard: '#1e293b',
-                    }
-                }
-            }
-        }
-    </script>
  
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen">
