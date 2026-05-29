@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
+
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>公司帳單管理系統 | Company Bill Management</title>
@@ -28,8 +32,8 @@
         const SUPABASE_URL = "https://kyebgygdcnrabcuuncac.supabase.co"; 
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5ZWJneWdkY25yYWJjdXVuY2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NDM3OTMsImV4cCI6MjA5NTUxOTc5M30.MLG0Eh4gq-boJ4GXyAtacJsSBE1K8NmyVzvZKl9f_vY";
 
-        // 初始化 Supabase 客戶端
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
         tailwind.config = {
             darkMode: 'class',
@@ -43,7 +47,7 @@
             }
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ 
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen">
     <!-- Login Modal -->
