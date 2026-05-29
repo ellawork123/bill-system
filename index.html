@@ -579,14 +579,31 @@
         let state = {
             lang: localStorage.getItem('bm_lang') || 'zh',
             dark: localStorage.getItem('bm_dark') === 'true',
-            bills: [], // Now fetched from Supabase
+            bills: [], // 
             templates: JSON.parse(localStorage.getItem('bm_templates') || '[]'),
             categories: JSON.parse(localStorage.getItem('bm_categories') || '["Utilities", "Rent", "Marketing", "Loans", "Telecom", "Others"]'),
             currentTab: 'dashboard',
             sort: { field: 'dueDate', order: 'asc' },
             password: localStorage.getItem('bm_password') || 'admin',
             isLoggedIn: false
-        };
+        }; 
+
+        // 🔄 喺 let state 下面直接貼入呢段：
+async function fetchBillsFromSupabase() {
+    try {
+        const { data, error } = await supabase
+            .from('bills')
+            .select('*')
+            .order('dueDate', { ascending: true });
+
+        if (error) throw error;
+        
+        state.bills = data || [];
+        renderAll();
+    } catch (err) {
+        console.error('❌ Error fetching bills:', err.message);
+    }
+}
 
         // --- Supabase CRUD Functions ---
         async function fetchBills() {
