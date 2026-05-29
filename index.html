@@ -741,22 +741,7 @@
             }
         }
 
-        // --- Password & Login Logic (Supabase Auth) ---
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const password = document.getElementById('login-password').value;
-            
-       
-            if (password === state.password) {
-                state.isLoggedIn = true;
-                document.getElementById('login-modal').classList.add('hidden');
-                document.getElementById('app').classList.remove('hidden');
-                updateUI();
-            } else {
-                alert('Incorrect password!');
-                document.getElementById('login-password').value = '';
-            }
-        });
+
 
         // Settings Modal
         const settingsModal = document.getElementById('settings-modal');
@@ -1629,14 +1614,38 @@
         document.getElementById('cheque-bank-filter').addEventListener('change', renderChequeHistory);
         document.getElementById('search-cheque').addEventListener('input', renderChequeHistory);
 
-        window.onload = () => {
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('login-password').value;
+            
+            if (password === state.password) {
+                state.isLoggedIn = true;
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                updateUI();
+                
+                // 🚀 登入成功，立刻去雲端撈 Data
+                if (typeof fetchBillsFromSupabase === 'function') {
+                    await fetchBillsFromSupabase();
+                }
+            } else {
+                alert('Incorrect password!');
+                document.getElementById('login-password').value = '';
+            }
+        });
+
+        // 2. 網頁一開機嘅初始化
+        window.onload = async () => {
             if (!state.isLoggedIn) {
                 document.getElementById('login-modal').classList.remove('hidden');
                 document.getElementById('app').classList.add('hidden');
             } else {
                 updateUI();
-                await fetchBillsFromSupabase();
+                if (typeof fetchBillsFromSupabase === 'function') {
+                    await fetchBillsFromSupabase();
+                }
             }
+        };
         };
     </script>
 </body>
