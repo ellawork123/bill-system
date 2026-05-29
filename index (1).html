@@ -701,7 +701,7 @@
         let state = {
             lang: localStorage.getItem('bm_lang') || 'zh',
             dark: localStorage.getItem('bm_dark') === 'true',
-            bills: JSON.parse(localStorage.getItem('bm_bills') || '[]'),
+            bills: [], //
             templates: JSON.parse(localStorage.getItem('bm_templates') || '[]'),
             categories: JSON.parse(localStorage.getItem('bm_categories') || '["Utilities", "Rent", "Marketing", "Loans", "Telecom", "Others"]'),
             currentTab: 'dashboard',
@@ -709,6 +709,22 @@
             password: localStorage.getItem('bm_password') || 'admin',
             isLoggedIn: false
         };
+
+async function fetchBillsFromSupabase() {
+    try {
+        const { data, error } = await supabase
+            .from('bills')
+            .select('*')
+            .order('dueDate', { ascending: true });
+
+        if (error) throw error;
+        
+        state.bills = data || [];
+        renderAll();
+    } catch (err) {
+        console.error('❌ Error fetching bills:', err.message);
+    }
+}
 
         // --- Password & Login Logic (Supabase Auth) ---
         document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -847,7 +863,6 @@
         }
 
         function saveData() {
-            localStorage.setItem('bm_bills', JSON.stringify(state.bills));
             localStorage.setItem('bm_templates', JSON.stringify(state.templates));
             localStorage.setItem('bm_categories', JSON.stringify(state.categories));
             localStorage.setItem('bm_lang', state.lang);
@@ -1607,6 +1622,7 @@
                 document.getElementById('app').classList.add('hidden');
             } else {
                 updateUI();
+                await fetchBillsFromSupabase();
             }
         };
     </script>
