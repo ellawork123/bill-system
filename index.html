@@ -710,30 +710,43 @@
             isLoggedIn: false
         };
 
-async function fetchBillsFromSupabase() {
-    try {
-        const { data, error } = await supabase
-            .from('bills')
-            .select('*')
-            .order('dueDate', { ascending: true });
+// 🚀 修正後的雲端儲存與刪除邏輯
+        async function saveBillToCloud(bill) {
+            // 修正：將 _supabase 改為 supabase
+            const { error } = await supabase
+                .from('bills')
+                .upsert(bill);
+            
+            if (error) {
+                console.error('Error saving bill:', error);
+                alert('Failed to save to cloud!');
+            } else {
+                // 修正：名稱改為我們新寫的 fetchBillsFromSupabase
+                await fetchBillsFromSupabase();
+            }
+        }
 
-        if (error) throw error;
-        
-        state.bills = data || [];
-        renderAll();
-    } catch (err) {
-        console.error('❌ Error fetching bills:', err.message);
-    }
-}
+        async function deleteBillFromCloud(id) {
+            // 修正：將 _supabase 改為 supabase
+            const { error } = await supabase
+                .from('bills')
+                .delete()
+                .eq('id', id);
+
+            if (error) {
+                console.error('Error deleting bill:', error);
+                alert('Failed to delete from cloud!');
+            } else {
+                await fetchBillsFromSupabase();
+            }
+        }
 
         // --- Password & Login Logic (Supabase Auth) ---
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const password = document.getElementById('login-password').value;
             
-            // 呢度假設你用緊 Supabase 嘅 Email/Password 登入，或者你只係想驗證密碼
-            // 如果你只係想做簡單嘅密碼驗證，我哋可以用 Supabase 嘅 RPC 或者 Auth
-            // 暫時我哋先維持 UI 邏輯，但準備好接駁 Auth
+       
             if (password === state.password) {
                 state.isLoggedIn = true;
                 document.getElementById('login-modal').classList.add('hidden');
